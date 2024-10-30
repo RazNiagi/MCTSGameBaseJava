@@ -2,8 +2,10 @@ package com.example.mctsbase.service;
 
 import com.example.mctsbase.enums.ConnectFourScore;
 import com.example.mctsbase.model.ConnectFourBoard;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class ConnectFourService {
     public void initializeBoard(ConnectFourBoard board) {
@@ -18,7 +20,7 @@ public class ConnectFourService {
 
     public void printBoard(ConnectFourBoard board) {
         for (int i = 5; i >= 0; i--) {
-            System.out.println(String.join(" ", new String(board.getBoard()[i]).split("")));
+            log.info(String.join(" ", new String(board.getBoard()[i]).split("")));
         }
     }
 
