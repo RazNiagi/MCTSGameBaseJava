@@ -4,5 +4,6 @@ public enum ConnectFourScore {
     RED_WIN,
     YELLOW_WIN,
     TIE,
-    INVALID_BOARD
+    INVALID_BOARD,
+    UNDETERMINED,
 }

@@ -1,8 +1,11 @@
 package com.example.mctsbase.service;
 
 import com.example.mctsbase.model.ConnectFourBoard;
+import com.example.mctsbase.model.MCTSNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -10,9 +13,62 @@ import java.io.*;
 @Slf4j
 @Service
 public class BoardImportExportService {
+    @Autowired
+    private ConnectFourMoveService connectFourMoveService;
+
+    private final ObjectMapper mapper = new ObjectMapper();
     public ConnectFourBoard importBoard(String fileName) {
         // read from file
-        return convertFileNameToBoard(fileName);
+        ConnectFourBoard newBoard = convertFileNameToBoard(fileName);
+        int moveCount = 0;
+        for (char[] row : newBoard.getBoard()) {
+            for (char c : row) {
+                if (c != '-') {
+                    moveCount++;
+                }
+            }
+        }
+        newBoard.setCurrentTurn(moveCount % 2 == 0 ? 'r' : 'y');
+        newBoard.setConnectFourScore(connectFourMoveService.checkBoardForWins(newBoard));
+        return newBoard;
+    }
+
+    public MCTSNode importNode(String boardFileName) {
+        String rootPath = System.getProperty("user.dir");
+        File file = new File(StringUtils.join(rootPath, "/MCTSConnectFour/", boardFileName, ".txt"));
+        try {
+            if (!file.exists()) {
+                return null;
+            }
+            return mapper.readValue(file, MCTSNode.class);
+        } catch (IOException e) {
+            log.error("Node file import failed", e);
+            return null;
+        }
+    }
+
+    public boolean saveNode(MCTSNode mctsNode) {
+        String boardAsString = convertBoardToFileName(mctsNode.getBoard());
+        String rootPath = System.getProperty("user.dir");
+        File file = new File(StringUtils.join(rootPath, "/MCTSConnectFour/", boardAsString, ".txt"));
+        try {
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            if (file.createNewFile()) {
+                log.info("Node file created");
+            } else {
+                log.warn("Node file already exists");
+                file.delete();
+                file.createNewFile();
+            }
+            mapper.writeValue(file, mctsNode);
+        } catch (IOException e) {
+            log.error("Node file creation failed", e);
+            return false;
+        }
+
+        return true;
     }
 
     public boolean saveBoard(ConnectFourBoard board) {
