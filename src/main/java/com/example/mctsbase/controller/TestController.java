@@ -30,13 +30,15 @@ public class TestController {
 
 
     @RequestMapping(value="/test", method = RequestMethod.GET)
-    public String test() {
+    public String test() throws Exception {
+
         ConnectFourBoard board = ConnectFourBoard.builder().build();
         connectFourService.initializeBoard(board);
         board.setCurrentTurn('r');
         board.setConnectFourScore(ConnectFourScore.UNDETERMINED);
-
-        while (ConnectFourScore.UNDETERMINED.equals(board.getConnectFourScore())) {
+        ConnectFourBoard correctBoard =  connectFourMoveService.makeMove(board, 3, board.getCurrentTurn());
+        int correctcount = 0;
+        for (int i = 0; i < 100; i++) {
             connectFourService.printBoard(board);
             MCTSNode mctsNode = MCTSNode.builder()
                     .depth(0)
@@ -49,9 +51,13 @@ public class TestController {
                     .currentValue(0.0)
                     .board(board)
                     .build();
-            board = mctsService.connectFourMCTS(mctsNode, 0, 500);
+            ConnectFourBoard newboard = mctsService.connectFourMCTS(mctsNode, 0, 500);
+            connectFourService.printBoard(newboard);
+            if (newboard.equals(correctBoard)) {
+                correctcount++;
+                log.info("correct " + correctcount + "/" + (i + 1));
+            }
         }
-        connectFourService.printBoard(board);
 
         return "";
     }

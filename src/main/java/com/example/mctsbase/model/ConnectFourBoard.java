@@ -15,7 +15,6 @@ import java.util.Arrays;
 public class ConnectFourBoard {
     private char[][] board = new char[6][7];
     private char currentTurn = 'r';
-    private int turnNumber;
     private ConnectFourScore connectFourScore = ConnectFourScore.UNDETERMINED;
 
     public void switchTurn() {
@@ -23,7 +22,7 @@ public class ConnectFourBoard {
     }
 
     public boolean equals(ConnectFourBoard other) {
-        return Arrays.deepEquals(this.board, other.board) && this.currentTurn == other.currentTurn && this.turnNumber == other.turnNumber && this.connectFourScore == other.connectFourScore;
+        return Arrays.deepEquals(this.board, other.board) && this.currentTurn == other.currentTurn && this.connectFourScore == other.connectFourScore;
     }
 
     public static ConnectFourBoard cloneBoard(ConnectFourBoard board) {
@@ -32,7 +31,6 @@ public class ConnectFourBoard {
             newBoardArray[i] = Arrays.copyOf(board.getBoard()[i], newBoardArray[i].length);
         }
         return ConnectFourBoard.builder()
-                .turnNumber(board.getTurnNumber())
                 .currentTurn(board.getCurrentTurn())
                 .connectFourScore(board.getConnectFourScore())
                 .board(newBoardArray)

@@ -3,20 +3,24 @@ package com.example.mctsbase.service;
 import com.example.mctsbase.enums.ConnectFourScore;
 import com.example.mctsbase.model.ConnectFourBoard;
 import com.example.mctsbase.model.MCTSNode;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Service
+@Slf4j
 public class MCTSService {
     private final double explorationConstant = Math.sqrt(2.0);
     private int maxDepth = 0;
     @Autowired
     private ConnectFourMoveService connectFourMoveService;
 
-    // TODO: Make a function for monte carlo tree search
+    @SneakyThrows
     public ConnectFourBoard connectFourMCTS(MCTSNode mctsNode, Integer maxDepthIncrease, Integer maxTime) {
         long startTime = System.currentTimeMillis();
         int startingDepth = mctsNode.getDepth();
@@ -25,9 +29,29 @@ public class MCTSService {
         // While resources left and tree not fully mapped
         while (System.currentTimeMillis() - startTime < maxTime) {
             MCTSNode leaf = traverse(mctsNode);
-            rollout(leaf);
+            try {
+                if (!leaf.isRoot()) {
+                    MCTSNode leafParent = leaf.getParent();
+                    List<Thread> threads = new ArrayList<>();
+                    for (MCTSNode child : leafParent.getChildren()) {
+                        threads.add(new Thread(() -> {
+                            rollout(child);
+                        }));
+                    }
+                    threads.forEach(Thread::start);
+                    for (Thread thread : threads) {
+                        thread.join();
+                    }
+                } else {
+                    rollout(leaf);
+                }
+            } catch (InterruptedException e) {
+                log.error(e.getMessage());
+            }
+
         }
-        return bestChild(mctsNode).getBoard();
+        log.info("times visited: " + mctsNode.getTimesVisited());
+        return mostVisitedChild(mctsNode).getBoard();
     }
 
     // Get the evaluation of the node provided
@@ -104,6 +128,9 @@ public class MCTSService {
         if (!ConnectFourScore.UNDETERMINED.equals(mctsNode.getBoard().getConnectFourScore())) {
             return true;
         }
+        if (mctsNode.getUnexplored().isEmpty()) {
+            return true;
+        }
         return maxDepth != 0 && mctsNode.getDepth() > maxDepth;
     }
 
@@ -115,6 +142,19 @@ public class MCTSService {
         for (MCTSNode child : mctsNode.getChildren()) {
             if (child.getCurrentValue() > maxVal) {
                 maxVal = child.getCurrentValue();
+                returnNode = child;
+            }
+        }
+        return returnNode;
+    }
+
+    // This is the move to make at the end of the MCTS period. Checks score instead of taking into account the exploration value;
+    public MCTSNode mostVisitedChild(MCTSNode mctsNode) {
+        int maxVisits = Integer.MIN_VALUE;
+        MCTSNode returnNode = null;
+        for (MCTSNode child : mctsNode.getChildren()) {
+            if (child.getTimesVisited() > maxVisits) {
+                maxVisits = child.getTimesVisited();
                 returnNode = child;
             }
         }
