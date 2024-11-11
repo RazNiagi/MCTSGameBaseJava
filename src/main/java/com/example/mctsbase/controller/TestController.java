@@ -9,9 +9,7 @@ import com.example.mctsbase.service.ConnectFourService;
 import com.example.mctsbase.service.MCTSService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -30,16 +28,14 @@ public class TestController {
 
 
     @RequestMapping(value="/test", method = RequestMethod.GET)
-    public String test() throws Exception {
+    public String test() {
 
         ConnectFourBoard board = ConnectFourBoard.builder().build();
         connectFourService.initializeBoard(board);
         board.setCurrentTurn('r');
         board.setConnectFourScore(ConnectFourScore.UNDETERMINED);
-        ConnectFourBoard correctBoard =  connectFourMoveService.makeMove(board, 3, board.getCurrentTurn());
-        int correctcount = 0;
-        for (int i = 0; i < 100; i++) {
-            connectFourService.printBoard(board);
+        connectFourService.printBoard(board);
+        while (board.getConnectFourScore() == ConnectFourScore.UNDETERMINED) {
             MCTSNode mctsNode = MCTSNode.builder()
                     .depth(0)
                     .root(true)
@@ -51,13 +47,62 @@ public class TestController {
                     .currentValue(0.0)
                     .board(board)
                     .build();
-            ConnectFourBoard newboard = mctsService.connectFourMCTS(mctsNode, 0, 500);
-            connectFourService.printBoard(newboard);
-            if (newboard.equals(correctBoard)) {
-                correctcount++;
-                log.info("correct " + correctcount + "/" + (i + 1));
-            }
+            board = mctsService.connectFourMCTS(mctsNode, 0, 2000);
+            connectFourService.printBoard(board);
         }
+
+        return "";
+    }
+
+    @PostMapping(value="/testParallel/{threads}")
+    public String testParallel(@PathVariable Integer threads) {
+
+        ConnectFourBoard board = ConnectFourBoard.builder().build();
+        connectFourService.initializeBoard(board);
+        board.setCurrentTurn('r');
+        board.setConnectFourScore(ConnectFourScore.UNDETERMINED);
+        connectFourService.printBoard(board);
+
+        while (board.getConnectFourScore() == ConnectFourScore.UNDETERMINED) {
+            MCTSNode mctsNode = MCTSNode.builder()
+                    .depth(0)
+                    .root(true)
+                    .unexplored(new ArrayList<>(connectFourMoveService.possibleNextBoards(board)))
+                    .children(new ArrayList<>())
+                    .parent(null)
+                    .timesVisited(0)
+                    .score(0.0)
+                    .currentValue(0.0)
+                    .board(board)
+                    .build();
+            board = mctsService.parallelMCTS(mctsNode, 0, 2000, threads);
+            connectFourService.printBoard(board);
+        }
+
+
+        return "";
+    }
+
+    @PostMapping(value="/tryboard/{boardstring}")
+    public String tryboard(@PathVariable String boardstring) {
+
+        ConnectFourBoard board = boardImportExportService.importBoard(boardstring);
+        connectFourService.printBoard(board);
+
+        MCTSNode mctsNode = MCTSNode.builder()
+                .depth(0)
+                .root(true)
+                .unexplored(new ArrayList<>(connectFourMoveService.possibleNextBoards(board)))
+                .children(new ArrayList<>())
+                .parent(null)
+                .timesVisited(0)
+                .score(0.0)
+                .currentValue(0.0)
+                .board(board)
+                .build();
+        ConnectFourBoard newboard = mctsService.connectFourMCTS(mctsNode, 0, 2000);
+        connectFourService.printBoard(newboard);
+
 
         return "";
     }

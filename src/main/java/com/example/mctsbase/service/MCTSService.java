@@ -8,19 +8,92 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Slf4j
 public class MCTSService {
     private final double explorationConstant = Math.sqrt(2.0);
     private int maxDepth = 0;
+    private List<MCTSNode> nodes = new ArrayList<>();
     @Autowired
     private ConnectFourMoveService connectFourMoveService;
 
     @SneakyThrows
+    public ConnectFourBoard parallelMCTS(MCTSNode mctsNode, Integer maxDepthIncrease, Integer maxTime, Integer numThreads) {
+        nodes = new ArrayList<>();
+        try {
+            List<Thread> threads = new ArrayList<>();
+            for (int i = 0; i < numThreads; i++) {
+                threads.add(new Thread(() -> connectFourMCTSForParallelization(mctsNode, maxDepthIncrease, maxTime)));
+            }
+            threads.forEach(Thread::start);
+            for (Thread thread : threads) {
+                thread.join();
+            }
+            MCTSNode newNode = MCTSNode.builder()
+                    .root(mctsNode.isRoot())
+                    .depth(mctsNode.getDepth())
+                    .timesVisited(mctsNode.getTimesVisited())
+                    .currentValue(mctsNode.getCurrentValue())
+                    .score(mctsNode.getScore())
+                    .board(ConnectFourBoard.cloneBoard(mctsNode.getBoard()))
+                    .children(new ArrayList<>())
+                    .parent(null)
+                    .unexplored(new ArrayList<>())
+                    .build();
+            connectFourMoveService.possibleNextBoards(mctsNode.getBoard()).forEach(board -> newNode.getChildren().add(MCTSNode.builder()
+                            .unexplored(null)
+                            .parent(null)
+                            .children(null)
+                            .board(board)
+                            .score(0)
+                            .currentValue(0)
+                            .depth(mctsNode.getDepth() + 1)
+                            .root(false)
+                            .timesVisited(0)
+                    .build()));
+            nodes.forEach(node -> {
+                if (Objects.nonNull(node)) {
+                    newNode.setTimesVisited(node.getTimesVisited() + newNode.getTimesVisited());
+                    node.getChildren().forEach(child -> newNode.getChildren().stream().filter(childNode -> childNode.getBoard().equals(child.getBoard())).findFirst()
+                            .ifPresent(correctChild -> correctChild.setTimesVisited(correctChild.getTimesVisited() + child.getTimesVisited())));
+                }
+
+            });
+            log.info("times visited {}", newNode.getTimesVisited());
+            return mostVisitedChild(newNode).getBoard();
+        } catch (InterruptedException e) {
+            log.error(e.getMessage());
+            return null;
+        }
+    }
+
+    public void connectFourMCTSForParallelization(MCTSNode mctsNode, Integer maxDepthIncrease, Integer maxTime) {
+        mctsNode = MCTSNode.builder()
+                .root(mctsNode.isRoot())
+                .depth(mctsNode.getDepth())
+                .timesVisited(mctsNode.getTimesVisited())
+                .currentValue(mctsNode.getCurrentValue())
+                .score(mctsNode.getScore())
+                .board(ConnectFourBoard.cloneBoard(mctsNode.getBoard()))
+                .children(new ArrayList<>(mctsNode.getChildren()))
+                .parent(null)
+                .unexplored(new ArrayList<>(mctsNode.getUnexplored()))
+                .build();
+        long startTime = System.currentTimeMillis();
+        int startingDepth = mctsNode.getDepth();
+        maxDepth = (maxDepthIncrease != null && maxDepthIncrease != 0) ? maxDepthIncrease + startingDepth : 0;
+
+        // While resources left and tree not fully mapped
+        while (System.currentTimeMillis() - startTime < maxTime) {
+            MCTSNode leaf = traverse(mctsNode);
+            rollout(leaf);
+        }
+
+        nodes.add(mctsNode);
+    }
+
     public ConnectFourBoard connectFourMCTS(MCTSNode mctsNode, Integer maxDepthIncrease, Integer maxTime) {
         long startTime = System.currentTimeMillis();
         int startingDepth = mctsNode.getDepth();
@@ -29,25 +102,7 @@ public class MCTSService {
         // While resources left and tree not fully mapped
         while (System.currentTimeMillis() - startTime < maxTime) {
             MCTSNode leaf = traverse(mctsNode);
-            try {
-                if (!leaf.isRoot()) {
-                    MCTSNode leafParent = leaf.getParent();
-                    List<Thread> threads = new ArrayList<>();
-                    for (MCTSNode child : leafParent.getChildren()) {
-                        threads.add(new Thread(() -> {
-                            rollout(child);
-                        }));
-                    }
-                    threads.forEach(Thread::start);
-                    for (Thread thread : threads) {
-                        thread.join();
-                    }
-                } else {
-                    rollout(leaf);
-                }
-            } catch (InterruptedException e) {
-                log.error(e.getMessage());
-            }
+            rollout(leaf);
 
         }
         log.info("times visited: " + mctsNode.getTimesVisited());
@@ -62,16 +117,11 @@ public class MCTSService {
             secondTermUnderSqrt = Math.log(Math.max(1, mctsNode.getParent().getTimesVisited())) / mctsNode.getTimesVisited();
         }
         double secondTerm = explorationConstant * Math.sqrt(secondTermUnderSqrt);
-        double returnValue = firstTerm + secondTerm;
-        mctsNode.setCurrentValue(returnValue);
-        return returnValue;
+        return firstTerm + secondTerm;
     }
 
     public void updateNode(MCTSNode mctsNode, ConnectFourScore score) {
         // Update the evaluation of the node
-        if ((score.equals(ConnectFourScore.RED_WIN) && mctsNode.getBoard().getCurrentTurn() == 'r') || (score.equals(ConnectFourScore.YELLOW_WIN) && mctsNode.getBoard().getCurrentTurn() == 'y')) {
-            mctsNode.setScore(mctsNode.getScore() - 1);
-        }
         if ((score.equals(ConnectFourScore.RED_WIN) && mctsNode.getBoard().getCurrentTurn() == 'y') || (score.equals(ConnectFourScore.YELLOW_WIN) && mctsNode.getBoard().getCurrentTurn() == 'r')) {
             mctsNode.setScore(mctsNode.getScore() + 1);
         }
@@ -79,6 +129,10 @@ public class MCTSService {
             mctsNode.setScore(mctsNode.getScore() + 0.5);
         }
         mctsNode.setTimesVisited(mctsNode.getTimesVisited() + 1);
+        updateNodeEval(mctsNode);
+    }
+
+    public void updateNodeEval(MCTSNode mctsNode) {
         mctsNode.setCurrentValue(getNodeEval(mctsNode));
     }
 
@@ -105,6 +159,7 @@ public class MCTSService {
     }
 
     public MCTSNode rolloutPolicy(MCTSNode mctsNode) {
+        // Look in to moving this shuffle to when the node is created
         Collections.shuffle(mctsNode.getUnexplored());
         ConnectFourBoard newBoard = mctsNode.getUnexplored().getFirst();
         MCTSNode newNode = MCTSNode.builder()
@@ -140,6 +195,7 @@ public class MCTSService {
         double maxVal = Double.NEGATIVE_INFINITY;
         MCTSNode returnNode = null;
         for (MCTSNode child : mctsNode.getChildren()) {
+            updateNodeEval(child);
             if (child.getCurrentValue() > maxVal) {
                 maxVal = child.getCurrentValue();
                 returnNode = child;
@@ -151,14 +207,15 @@ public class MCTSService {
     // This is the move to make at the end of the MCTS period. Checks score instead of taking into account the exploration value;
     public MCTSNode mostVisitedChild(MCTSNode mctsNode) {
         int maxVisits = Integer.MIN_VALUE;
-        MCTSNode returnNode = null;
         for (MCTSNode child : mctsNode.getChildren()) {
             if (child.getTimesVisited() > maxVisits) {
                 maxVisits = child.getTimesVisited();
-                returnNode = child;
             }
         }
-        return returnNode;
+        int finalMaxVisits = maxVisits;
+        List<MCTSNode> nodesWithMaxVisits = new ArrayList<>(mctsNode.getChildren().stream().filter(child -> child.getTimesVisited() == finalMaxVisits).toList());
+        nodesWithMaxVisits.sort(Comparator.comparingDouble(MCTSNode::getScore).reversed());
+        return nodesWithMaxVisits.getFirst();
     }
 
     // Update the node and then move up the tree, updating all the nodes along the way
