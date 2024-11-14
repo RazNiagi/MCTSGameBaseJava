@@ -1,7 +1,7 @@
 package com.example.mctsbase.service;
 
 import com.example.mctsbase.enums.ConnectFourScore;
-import com.example.mctsbase.model.ConnectFourBoard;
+import com.example.mctsbase.model.ConnectFourGameState;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +12,11 @@ import java.util.List;
 @Service
 public class ConnectFourMoveService {
 
-    public ConnectFourBoard makeMove(ConnectFourBoard board, int column, char color) throws Exception {
+    public ConnectFourGameState makeMove(ConnectFourGameState board, int column, char color) throws Exception {
         if (!canMakeMove(board, column)) {
             throw new Exception("Illegal move");
         }
-        ConnectFourBoard newBoard = ConnectFourBoard.cloneBoard(board);
+        ConnectFourGameState newBoard = ConnectFourGameState.cloneBoard(board);
         int highestEmptyRowInColumn = 0;
         while (highestEmptyRowInColumn < 6) {
             if (newBoard.getBoard()[highestEmptyRowInColumn][column] == '-') {
@@ -30,11 +30,11 @@ public class ConnectFourMoveService {
         return newBoard;
     }
 
-    public boolean canMakeMove(ConnectFourBoard board, int column) {
+    public boolean canMakeMove(ConnectFourGameState board, int column) {
         return board.getBoard()[5][column] == '-';
     }
 
-    public List<Integer> getAllLegalMoves(ConnectFourBoard board) {
+    public List<Integer> getAllLegalMoves(ConnectFourGameState board) {
         List <Integer> legalMoves = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             if (canMakeMove(board, i)) {
@@ -44,14 +44,14 @@ public class ConnectFourMoveService {
         return legalMoves;
     }
 
-    public List<ConnectFourBoard> possibleNextBoards(ConnectFourBoard board) {
+    public List<ConnectFourGameState> possibleNextBoards(ConnectFourGameState board) {
         if (!ConnectFourScore.UNDETERMINED.equals(board.getConnectFourScore())) {
             return new ArrayList<>();
         }
-        List<ConnectFourBoard> possibleNextBoards = new ArrayList<>();
+        List<ConnectFourGameState> possibleNextBoards = new ArrayList<>();
         for (Integer col : getAllLegalMoves(board)) {
             try {
-                ConnectFourBoard tempBoard = ConnectFourBoard.cloneBoard(board);
+                ConnectFourGameState tempBoard = ConnectFourGameState.cloneBoard(board);
                 possibleNextBoards.add(makeMove(tempBoard, col, tempBoard.getCurrentTurn()));
             } catch (Exception e) {
                 log.error(e.getMessage());
@@ -60,7 +60,7 @@ public class ConnectFourMoveService {
         return possibleNextBoards;
     }
 
-    public ConnectFourScore checkBoardForWins(ConnectFourBoard board) {
+    public ConnectFourScore checkBoardForWins(ConnectFourGameState board) {
         boolean redWin = false;
         boolean yellowWin = false;
         char[][] currentBoard = board.getBoard();

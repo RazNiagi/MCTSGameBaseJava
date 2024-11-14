@@ -1,7 +1,7 @@
 package com.example.mctsbase.controller;
 
 import com.example.mctsbase.enums.ConnectFourScore;
-import com.example.mctsbase.model.ConnectFourBoard;
+import com.example.mctsbase.model.ConnectFourGameState;
 import com.example.mctsbase.model.MCTSNode;
 import com.example.mctsbase.service.BoardImportExportService;
 import com.example.mctsbase.service.ConnectFourMoveService;
@@ -30,7 +30,7 @@ public class TestController {
     @RequestMapping(value="/test", method = RequestMethod.GET)
     public String test() {
 
-        ConnectFourBoard board = ConnectFourBoard.builder().build();
+        ConnectFourGameState board = ConnectFourGameState.builder().build();
         connectFourService.initializeBoard(board);
         board.setCurrentTurn('r');
         board.setConnectFourScore(ConnectFourScore.UNDETERMINED);
@@ -57,7 +57,7 @@ public class TestController {
     @PostMapping(value="/testParallel/{threads}")
     public String testParallel(@PathVariable Integer threads) {
 
-        ConnectFourBoard board = ConnectFourBoard.builder().build();
+        ConnectFourGameState board = ConnectFourGameState.builder().build();
         connectFourService.initializeBoard(board);
         board.setCurrentTurn('r');
         board.setConnectFourScore(ConnectFourScore.UNDETERMINED);
@@ -86,7 +86,7 @@ public class TestController {
     @PostMapping(value="/tryboard/{boardstring}")
     public String tryboard(@PathVariable String boardstring) {
 
-        ConnectFourBoard board = boardImportExportService.importBoard(boardstring);
+        ConnectFourGameState board = boardImportExportService.importBoard(boardstring);
         connectFourService.printBoard(board);
 
         MCTSNode mctsNode = MCTSNode.builder()
@@ -100,7 +100,7 @@ public class TestController {
                 .currentValue(0.0)
                 .board(board)
                 .build();
-        ConnectFourBoard newboard = mctsService.connectFourMCTS(mctsNode, 0, 2000);
+        ConnectFourGameState newboard = mctsService.connectFourMCTS(mctsNode, 0, 2000);
         connectFourService.printBoard(newboard);
 
 

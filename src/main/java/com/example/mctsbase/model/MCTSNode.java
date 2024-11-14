@@ -16,9 +16,9 @@ public class MCTSNode {
     private int depth;
     private int timesVisited;
     private double currentValue;
-    private ConnectFourBoard board;
+    private ConnectFourGameState board;
     private List<MCTSNode> children;
     private MCTSNode parent;
-    private List<ConnectFourBoard> unexplored;
+    private List<ConnectFourGameState> unexplored;
     private double score;
 }

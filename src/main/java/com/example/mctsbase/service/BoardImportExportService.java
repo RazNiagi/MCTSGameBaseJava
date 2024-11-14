@@ -1,6 +1,6 @@
 package com.example.mctsbase.service;
 
-import com.example.mctsbase.model.ConnectFourBoard;
+import com.example.mctsbase.model.ConnectFourGameState;
 import com.example.mctsbase.model.MCTSNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +17,9 @@ public class BoardImportExportService {
     private ConnectFourMoveService connectFourMoveService;
 
     private final ObjectMapper mapper = new ObjectMapper();
-    public ConnectFourBoard importBoard(String fileName) {
+    public ConnectFourGameState importBoard(String fileName) {
         // read from file
-        ConnectFourBoard newBoard = convertFileNameToBoard(fileName);
+        ConnectFourGameState newBoard = convertFileNameToBoard(fileName);
         int moveCount = 0;
         for (char[] row : newBoard.getBoard()) {
             for (char c : row) {
@@ -71,7 +71,7 @@ public class BoardImportExportService {
         return true;
     }
 
-    public boolean saveBoard(ConnectFourBoard board) {
+    public boolean saveBoard(ConnectFourGameState board) {
         //convert to single string then save file with file name being board state
         String boardAsString = convertBoardToFileName(board);
         String rootPath = System.getProperty("user.dir");
@@ -101,7 +101,7 @@ public class BoardImportExportService {
         return true;
     }
 
-    public String convertBoardToFileName(ConnectFourBoard board) {
+    public String convertBoardToFileName(ConnectFourGameState board) {
         char[][] currentBoard = board.getBoard();
         StringBuilder flattenedBoard = new StringBuilder();
         for (char[] chars : currentBoard) {
@@ -110,7 +110,7 @@ public class BoardImportExportService {
         return flattenedBoard.toString();
     }
 
-    public ConnectFourBoard convertFileNameToBoard(String fileName) {
+    public ConnectFourGameState convertFileNameToBoard(String fileName) {
         char[][] newBoard = new char[6][7];
         if (fileName.length() != 42) {
             log.error("Board file name is not correct length");
@@ -122,6 +122,6 @@ public class BoardImportExportService {
             System.arraycopy(chars, 0, tempArray, 0, 7);
             newBoard[5 - i] = tempArray;
         }
-        return ConnectFourBoard.builder().board(newBoard).build();
+        return ConnectFourGameState.builder().board(newBoard).build();
     }
 }

@@ -1,7 +1,7 @@
 package com.example.mctsbase.service;
 
 import com.example.mctsbase.enums.ConnectFourScore;
-import com.example.mctsbase.model.ConnectFourBoard;
+import com.example.mctsbase.model.ConnectFourGameState;
 import com.example.mctsbase.model.MCTSNode;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ public class MCTSService {
     private ConnectFourMoveService connectFourMoveService;
 
     @SneakyThrows
-    public ConnectFourBoard parallelMCTS(MCTSNode mctsNode, Integer maxDepthIncrease, Integer maxTime, Integer numThreads) {
+    public ConnectFourGameState parallelMCTS(MCTSNode mctsNode, Integer maxDepthIncrease, Integer maxTime, Integer numThreads) {
         nodes = new ArrayList<>();
         try {
             List<Thread> threads = new ArrayList<>();
@@ -37,7 +37,7 @@ public class MCTSService {
                     .timesVisited(mctsNode.getTimesVisited())
                     .currentValue(mctsNode.getCurrentValue())
                     .score(mctsNode.getScore())
-                    .board(ConnectFourBoard.cloneBoard(mctsNode.getBoard()))
+                    .board(ConnectFourGameState.cloneBoard(mctsNode.getBoard()))
                     .children(new ArrayList<>())
                     .parent(null)
                     .unexplored(new ArrayList<>())
@@ -76,7 +76,7 @@ public class MCTSService {
                 .timesVisited(mctsNode.getTimesVisited())
                 .currentValue(mctsNode.getCurrentValue())
                 .score(mctsNode.getScore())
-                .board(ConnectFourBoard.cloneBoard(mctsNode.getBoard()))
+                .board(ConnectFourGameState.cloneBoard(mctsNode.getBoard()))
                 .children(new ArrayList<>(mctsNode.getChildren()))
                 .parent(null)
                 .unexplored(new ArrayList<>(mctsNode.getUnexplored()))
@@ -94,7 +94,7 @@ public class MCTSService {
         nodes.add(mctsNode);
     }
 
-    public ConnectFourBoard connectFourMCTS(MCTSNode mctsNode, Integer maxDepthIncrease, Integer maxTime) {
+    public ConnectFourGameState connectFourMCTS(MCTSNode mctsNode, Integer maxDepthIncrease, Integer maxTime) {
         long startTime = System.currentTimeMillis();
         int startingDepth = mctsNode.getDepth();
         maxDepth = (maxDepthIncrease != null && maxDepthIncrease != 0) ? maxDepthIncrease + startingDepth : 0;
@@ -161,7 +161,7 @@ public class MCTSService {
     public MCTSNode rolloutPolicy(MCTSNode mctsNode) {
         // Look in to moving this shuffle to when the node is created
         Collections.shuffle(mctsNode.getUnexplored());
-        ConnectFourBoard newBoard = mctsNode.getUnexplored().getFirst();
+        ConnectFourGameState newBoard = mctsNode.getUnexplored().getFirst();
         MCTSNode newNode = MCTSNode.builder()
                 .root(false)
                 .score(0.0)
