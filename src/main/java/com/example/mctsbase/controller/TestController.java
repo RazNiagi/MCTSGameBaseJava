@@ -30,10 +30,7 @@ public class TestController {
     @RequestMapping(value="/test", method = RequestMethod.GET)
     public String test() {
 
-        ConnectFourGameState board = ConnectFourGameState.builder().build();
-        connectFourService.initializeBoard(board);
-        board.setCurrentTurn('r');
-        board.setBoardGameScore(BoardGameScore.UNDETERMINED);
+        ConnectFourGameState board = connectFourService.initializeBoard(ConnectFourGameState.builder().build());
         connectFourService.printBoard(board);
         while (board.getBoardGameScore() == BoardGameScore.UNDETERMINED) {
             MCTSNode mctsNode = MCTSNode.builder()
@@ -57,10 +54,7 @@ public class TestController {
     @PostMapping(value="/testParallel/{threads}")
     public String testParallel(@PathVariable Integer threads) {
 
-        ConnectFourGameState board = ConnectFourGameState.builder().build();
-        connectFourService.initializeBoard(board);
-        board.setCurrentTurn('r');
-        board.setBoardGameScore(BoardGameScore.UNDETERMINED);
+        ConnectFourGameState board = connectFourService.initializeBoard(ConnectFourGameState.builder().build());
         connectFourService.printBoard(board);
 
         while (board.getBoardGameScore() == BoardGameScore.UNDETERMINED) {
@@ -101,7 +95,6 @@ public class TestController {
                 .build();
         ConnectFourGameState newboard = mctsService.connectFourMCTS(mctsNode, 0, 2000);
         connectFourService.printBoard(newboard);
-
 
         return "";
     }

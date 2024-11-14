@@ -10,7 +10,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class ConnectFourMoveService {
+public class ConnectFourMoveService implements BaseGameMoveService<ConnectFourGameState> {
 
     public ConnectFourGameState makeMove(ConnectFourGameState board, int column, char color) throws Exception {
         if (!canMakeMove(board, column)) {
