@@ -1,22 +1,15 @@
 package com.example.mctsbase.model;
 
-import com.example.mctsbase.enums.BoardGameScore;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Arrays;
 
 @Data
-@Builder(toBuilder = true)
-@NoArgsConstructor
+@SuperBuilder(toBuilder = true)
 @AllArgsConstructor
-public class ConnectFourGameState {
-    private char[][] board = new char[6][7];
-    private char currentTurn = 'r';
-    private BoardGameScore boardGameScore = BoardGameScore.UNDETERMINED;
-
+public class ConnectFourGameState extends BaseGameState {
     public void switchTurn() {
         this.currentTurn = this.currentTurn == 'r' ? 'y' : 'r';
     }

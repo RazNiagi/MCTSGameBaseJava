@@ -1,26 +1,26 @@
 package com.example.mctsbase.model;
 
-import com.example.mctsbase.enums.BoardGameScore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Data
-@Builder(toBuilder = true)
+@SuperBuilder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class OnitamaGameState {
-    private char[][] board = new char[5][5];
-    private char currentTurn = 'r';
+public class OnitamaGameState extends BaseGameState {
+    @Builder.Default
     private List<OnitamaSimpleMovementCard> bluePlayerMovementCards = new ArrayList<>();
+    @Builder.Default
     private List<OnitamaSimpleMovementCard> redPlayerMovementCards = new ArrayList<>();
+    @Builder.Default
     private OnitamaSimpleMovementCard middleCard = null;
-    private BoardGameScore boardGameScore = BoardGameScore.UNDETERMINED;
 
     public void switchTurn() {
         this.currentTurn = this.currentTurn == 'r' ? 'b' : 'r';

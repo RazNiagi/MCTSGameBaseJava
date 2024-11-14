@@ -79,7 +79,6 @@ public class TestController {
             connectFourService.printBoard(board);
         }
 
-
         return "";
     }
 
