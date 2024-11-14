@@ -17,4 +17,5 @@ public class OnitamaMovementCard extends OnitamaSimpleMovementCard {
     private char stampColor;
     private String quote;
     private OnitamaMovementBias movementBias;
+    private String expansion;
 }

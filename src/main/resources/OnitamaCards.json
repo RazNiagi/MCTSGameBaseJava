@@ -1,990 +1,1028 @@
-{
-  "baseGame": [
-    {
-      "movesAvailable": [
-        {
-          "x": 0,
-          "y": 2
-        },
-        {
-          "x": 0,
-          "y": -1
-        }
-      ],
-      "name": "Tiger",
-      "stampColor": "b",
-      "quote": "The power of your Art projects itself like a shadow.\nSense your opponent's fear and pounce with certainty and strength.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 0,
-          "y": 1
-        },
-        {
-          "x": 2,
-          "y": 0
-        },
-        {
-          "x": -2,
-          "y": 0
-        }
-      ],
-      "name": "Crab",
-      "stampColor": "b",
-      "quote": "Move with your opponent's movements, as if you are the never ceasing tide.\nWhen the time is right, he will fall prey to your attack.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 1,
-          "y": 1
-        },
-        {
-          "x": -1,
-          "y": 1
-        },
-        {
-          "x": 1,
-          "y": -1
-        },
-        {
-          "x": -1,
-          "y": -1
-        }
-      ],
-      "name": "Monkey",
-      "stampColor": "b",
-      "quote": "Without deception you cannot carry out strategy,\nwithout strategy you cannot control the opponent.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 0,
-          "y": 1
-        },
-        {
-          "x": 1,
-          "y": -1
-        },
-        {
-          "x": -1,
-          "y": -1
-        }
-      ],
-      "name": "Crane",
-      "stampColor": "b",
-      "quote": "Make no unnecessary movement, conserving your strength until the time\nis right to strike. The true Art is a symphony of graceful strikes.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 2,
-          "y": 1
-        },
-        {
-          "x": -2,
-          "y": 1
-        },
-        {
-          "x": 1,
-          "y": -1
-        },
-        {
-          "x": -1,
-          "y": -1
-        }
-      ],
-      "name": "Dragon",
-      "stampColor": "r",
-      "quote": "Be swift as the thunder that peals before you have a chance to cover your ears,\nfast as the lightning that flashes before you can blink your eyes.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 1,
-          "y": 1
-        },
-        {
-          "x": -1,
-          "y": 1
-        },
-        {
-          "x": 1,
-          "y": 0
-        },
-        {
-          "x": -1,
-          "y": 0
-        }
-      ],
-      "name": "Elephant",
-      "stampColor": "r",
-      "quote": "Only the strong may pursue your Art. This is why it is the true Art,\nthe Art that cannot be stopped.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 1,
-          "y": 1
-        },
-        {
-          "x": -1,
-          "y": 1
-        },
-        {
-          "x": 0,
-          "y": -1
-        }
-      ],
-      "name": "Mantis",
-      "stampColor": "r",
-      "quote": "Your opponent sees, but does not understand. Distract the watchful, misguide\nthe wary. This is the Art of the Mantis, the Art of the deceptive strike.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 0,
-          "y": 1
-        },
-        {
-          "x": 1,
-          "y": 0
-        },
-        {
-          "x": -1,
-          "y": 0
-        }
-      ],
-      "name": "Boar",
-      "stampColor": "r",
-      "quote": "Watch for opportunity, for it will present itself. Then strike, focusing all your\nmight into a single rush, trampling your opponent's Art under your own.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": -2,
-          "y": 0
-        },
-        {
-          "x": -1,
-          "y": 1
-        },
-        {
-          "x": 1,
-          "y": -1
-        }
-      ],
-      "name": "Frog",
-      "stampColor": "r",
-      "quote": "Do not fail to learn from the pure voice of an ever-flowing mountain stream\nsplashing over the rocks. Emulate its flow, mimic its power.",
-      "movementBias": 2
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": -1,
-          "y": 1
-        },
-        {
-          "x": -1,
-          "y": 0
-        },
-        {
-          "x": 1,
-          "y": 0
-        },
-        {
-          "x": 1,
-          "y": -1
-        }
-      ],
-      "name": "Goose",
-      "stampColor": "b",
-      "quote": "Your robes are your cloak of feathers; spread your wings to hide your intentions.\nEven then, as your opponent seeks to determine your motive, you shall strike.",
-      "movementBias": 2
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": -1,
-          "y": 0
-        },
-        {
-          "x": 0,
-          "y": 1
-        },
-        {
-          "x": 0,
-          "y": -1
-        }
-      ],
-      "name": "Horse",
-      "stampColor": "r",
-      "quote": "Lose yourself in the rhythm of your Art. At times be swift and decisive,\nat other times measured and taunting.",
-      "movementBias": 2
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": -1,
-          "y": 1
-        },
-        {
-          "x": -1,
-          "y": -1
-        },
-        {
-          "x": 1,
-          "y": 0
-        }
-      ],
-      "name": "Eel",
-      "stampColor": "b",
-      "quote": "If your opponent strikes with fire, counter with water,\nbecoming completely fluid and freeflowing.",
-      "movementBias": 2
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 2,
-          "y": 0
-        },
-        {
-          "x": 1,
-          "y": 1
-        },
-        {
-          "x": -1,
-          "y": -1
-        }
-      ],
-      "name": "Rabbit",
-      "stampColor": "b",
-      "quote": "Be near to your opponent, blinding him with your speed.\nThe Art of the Rabbit is the Art of speed.",
-      "movementBias": 1
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 1,
-          "y": 1
-        },
-        {
-          "x": 1,
-          "y": 0
-        },
-        {
-          "x": -1,
-          "y": 0
-        },
-        {
-          "x": -1,
-          "y": -1
-        }
-      ],
-      "name": "Rooster",
-      "stampColor": "r",
-      "quote": "Do not allow your enemy to rest, but focus your Art\nto deliver quick, sharp strikes whenever he lags.",
-      "movementBias": 1
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 1,
-          "y": 0
-        },
-        {
-          "x": 0,
-          "y": 1
-        },
-        {
-          "x": 0,
-          "y": -1
-        }
-      ],
-      "name": "Ox",
-      "stampColor": "b",
-      "quote": "Put your strength into the forms of Art -\nin its punches, its kicks, in the steady advance of your aggression.",
-      "movementBias": 1
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 1,
-          "y": 1
-        },
-        {
-          "x": 1,
-          "y": -1
-        },
-        {
-          "x": -1,
-          "y": 0
-        }
-      ],
-      "name": "Cobra",
-      "stampColor": "r",
-      "quote": "Attack violently when your opponents are not expecting it -\nshow leisure in the beginning, then suddenly attack vigorously.",
-      "movementBias": 1
-    }
-  ],
-  "senseisPath": [
-    {
-      "movesAvailable": [
-        {
-          "x": 0,
-          "y": -1
-        },
-        {
-          "x": 2,
-          "y": 1
-        },
-        {
-          "x": -2,
-          "y": 1
-        }
-      ],
-      "name": "Giraffe",
-      "stampColor": "b",
-      "quote": "Project your power, vaulting at opponents who believe themselves\nsafely out of range. Aggression is subservient to surprise.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 0,
-          "y": -2
-        },
-        {
-          "x": 1,
-          "y": 2
-        },
-        {
-          "x": -1,
-          "y": 2
-        }
-      ],
-      "name": "Kirin",
-      "stampColor": "r",
-      "quote": "There is Art in grace, Art in discernment, Art in sensing the truth. Pierce the veil\nof the shadow, and strike your opponent from a place of enlightenment.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 1,
-          "y": 1
-        },
-        {
-          "x": -1,
-          "y": 1
-        },
-        {
-          "x": 2,
-          "y": 0
-        },
-        {
-          "x": -2,
-          "y": 0
-        }
-      ],
-      "name": "Phoenix",
-      "stampColor": "b",
-      "quote": "No opponent expects that which he believes is not there. Harness the\nshadows, bend the sun, strike as the wind - from a place unseen.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 1,
-          "y": -1
-        },
-        {
-          "x": -1,
-          "y": -1
-        },
-        {
-          "x": 2,
-          "y": 0
-        },
-        {
-          "x": -2,
-          "y": 0
-        }
-      ],
-      "name": "Turtle",
-      "stampColor": "r",
-      "quote": "Within your sphere of power, your Art remains supreme.\nEngage your opponent and deflect his strikes.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 1,
-          "y": 1
-        },
-        {
-          "x": 1,
-          "y": 0
-        },
-        {
-          "x": 1,
-          "y": -1
-        }
-      ],
-      "name": "Fox",
-      "stampColor": "r",
-      "quote": "Harry your opponent through your Art, give him no time to think, less time to act.",
-      "movementBias": 1
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 1,
-          "y": 1
-        },
-        {
-          "x": 0,
-          "y": 1
-        },
-        {
-          "x": -1,
-          "y": -1
-        }
-      ],
-      "name": "Panda",
-      "stampColor": "r",
-      "quote": "Your opponent watches for your complacency, so show it to him. Lull him into an\nattack, then unleash your Art when he has already committed to his attack.",
-      "movementBias": 1
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 2,
-          "y": 0
-        },
-        {
-          "x": 0,
-          "y": 1
-        },
-        {
-          "x": -1,
-          "y": -1
-        }
-      ],
-      "name": "Sea Snake",
-      "stampColor": "b",
-      "quote": "There is no movement or opportunity wasted. Strike where you are not\nexpected, flow where your opponent believes you cannot be.",
-      "movementBias": 1
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 1,
-          "y": 0
-        },
-        {
-          "x": 0,
-          "y": 1
-        },
-        {
-          "x": -1,
-          "y": -1
-        }
-      ],
-      "name": "Mouse",
-      "stampColor": "b",
-      "quote": "All opponents have a hole in their Art, an opening of weakness.\nThe Art of the Mouse is to find that opening, enter it, and strike.",
-      "movementBias": 1
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 2,
-          "y": 1
-        },
-        {
-          "x": 0,
-          "y": 1
-        },
-        {
-          "x": -1,
-          "y": -1
-        }
-      ],
-      "name": "Tanuki",
-      "stampColor": "b",
-      "quote": "The Art of the Tanuki is the art of opportunity.\nPatience will open the door to the perfect angle of your strike.",
-      "movementBias": 1
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 1,
-          "y": 1
-        },
-        {
-          "x": -1,
-          "y": -1
-        },
-        {
-          "x": -2,
-          "y": 0
-        }
-      ],
-      "name": "Sable",
-      "stampColor": "b",
-      "quote": "Be fluid, and control the battlefield with constant movement\nand precision strikes.",
-      "movementBias": 1
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": -1,
-          "y": 1
-        },
-        {
-          "x": -1,
-          "y": 0
-        },
-        {
-          "x": -1,
-          "y": -1
-        }
-      ],
-      "name": "Dog",
-      "stampColor": "b",
-      "quote": "Deny your opponent his Art. Once you have blocked his attack,\ndo not let him go, but instead, relentlessly hamper his momentum.",
-      "movementBias": 2
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": -1,
-          "y": 1
-        },
-        {
-          "x": 0,
-          "y": 1
-        },
-        {
-          "x": 1,
-          "y": -1
-        }
-      ],
-      "name": "Bear",
-      "stampColor": "b",
-      "quote": "Defend your ground. Do not be like those fools who are quick to run to attack from\nanother position. They have lost the fight because they have already run from it.",
-      "movementBias": 2
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": -2,
-          "y": 0
-        },
-        {
-          "x": 0,
-          "y": 1
-        },
-        {
-          "x": 1,
-          "y": -1
-        }
-      ],
-      "name": "Viper",
-      "stampColor": "r",
-      "quote": "The Art of the Viper is to strike in the Moment. This is the true Art.",
-      "movementBias": 2
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": -1,
-          "y": 0
-        },
-        {
-          "x": 0,
-          "y": 1
-        },
-        {
-          "x": 1,
-          "y": -1
-        }
-      ],
-      "name": "Rat",
-      "stampColor": "r",
-      "quote": "Your opponent cannot attack what he cannot predict.\nLet your movements be immediate, your attacks be unexpected.",
-      "movementBias": 2
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": -2,
-          "y": 1
-        },
-        {
-          "x": 0,
-          "y": 1
-        },
-        {
-          "x": 1,
-          "y": -1
-        }
-      ],
-      "name": "Iguana",
-      "stampColor": "r",
-      "quote": "While your opponents wears himself out with unnecessary movement, you will\ngather your strength. A devastating sweep or fatal punch is the pinnacle of the Art.",
-      "movementBias": 2
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": -1,
-          "y": 1
-        },
-        {
-          "x": 1,
-          "y": -1
-        },
-        {
-          "x": 2,
-          "y": 0
-        }
-      ],
-      "name": "Otter",
-      "stampColor": "r",
-      "quote": "Who can stop the flowing stream? The Art of the Otter is the Art of Power,\nknocking away the advances of the opponent through sustained, powerful strikes.",
-      "movementBias": 2
-    }
-  ],
-  "wayOfTheWind": [
-    {
-      "movesAvailable": [
-        {
-          "x": 1,
-          "y": 1
-        },
-        {
-          "x": -1,
-          "y": 0
-        },
-        {
-          "x": 0,
-          "y": -1
-        }
-      ],
-      "name": "Goat",
-      "stampColor": "r",
-      "quote": "Strategy flows from the mind. Deny your opponents clear thought through strikes\nat their head and eyes, and their strategy will fail, providing the chance to strike.",
-      "movementBias": 1
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": -1,
-          "y": 1
-        },
-        {
-          "x": 1,
-          "y": 0
-        },
-        {
-          "x": 0,
-          "y": -1
-        }
-      ],
-      "name": "Sheep",
-      "stampColor": "b",
-      "quote": "Follow your opponent's movements, shadow his forms. The Art of the Sheep is the\nart of knowing, and of using your opponent's strengths against his weaknesses.",
-      "movementBias": 2
-    }
-  ],
-  "promotional":[
-    {
-      "movesAvailable": [
-        {
-          "x": -1,
-          "y": 0
-        },
-        {
-          "x": 0,
-          "y": 1
-        },
-        {
-          "x": 2,
-          "y": -2
-        }
-      ],
-      "name": "Centipede",
-      "stampColor": "r",
-      "quote": "Mesmerize your opponent with many movements. Your real attack\nwill come unexpectedly.",
-      "movementBias": 2
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 1,
-          "y": 0
-        },
-        {
-          "x": 0,
-          "y": 1
-        },
-        {
-          "x": -2,
-          "y": -2
-        }
-      ],
-      "name": "Hornet",
-      "stampColor": "b",
-      "quote": "Distract your opponent from above while striking from below.\nYour venom will weaken their fortitude.",
-      "movementBias": 1
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": -1,
-          "y": 0
-        },
-        {
-          "x": 0,
-          "y": 1
-        },
-        {
-          "x": 2,
-          "y": 0
-        },
-        {
-          "x": 0,
-          "y": -2
-        }
-      ],
-      "name": "Cat",
-      "stampColor": "r",
-      "quote": "Avoidance can lead to victory as much as aggression.",
-      "movementBias": 1
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 1,
-          "y": 0
-        },
-        {
-          "x": 0,
-          "y": 1
-        },
-        {
-          "x": -2,
-          "y": 0
-        },
-        {
-          "x": 0,
-          "y": -2
-        }
-      ],
-      "name": "Serow",
-      "stampColor": "b",
-      "quote": "Knowing when to dodge is key to overcoming obstacles.",
-      "movementBias": 2
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": -1,
-          "y": 1
-        },
-        {
-          "x": 1,
-          "y": 1
-        },
-        {
-          "x": -1,
-          "y": -2
-        },
-        {
-          "x": 1,
-          "y": -2
-        }
-      ],
-      "name": "Lobster",
-      "stampColor": "r",
-      "quote": "Your Art must be both fluid and precise, like the convergence of Ocean and Air.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": -1,
-          "y": 0
-        },
-        {
-          "x": 1,
-          "y": 0
-        },
-        {
-          "x": -1,
-          "y": -1
-        },
-        {
-          "x": 1,
-          "y": -1
-        }
-      ],
-      "name": "Steer",
-      "stampColor": "b",
-      "quote": "Your Art comes from your core; only with nourished stomach\nwill you find the strength to conquer your adversaries.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 0,
-          "y": -1
-        },
-        {
-          "x": 2,
-          "y": 1
-        },
-        {
-          "x": -2,
-          "y": 1
-        }
-      ],
-      "name": "Butterfly",
-      "stampColor": "r",
-      "quote": "Let the wind carry your strikes fiercely.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [
-        {
-          "x": 0,
-          "y": 1
-        },
-        {
-          "x": 2,
-          "y": -1
-        },
-        {
-          "x": -2,
-          "y": -1
-        }
-      ],
-      "name": "Moth",
-      "stampColor": "b",
-      "quote": "Strike your opponent from the darkness pushing them into the light.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [],
-      "studentOnlyMoves": [
-        {
-          "x": 2,
-          "y": 1
-        },
-        {
-          "x": -2,
-          "y": 1
-        }
-      ],
-      "masterOnlyMoves": [
-        {
-          "x": 0,
-          "y": 1
-        }
-      ],
-      "name": "Mejika",
-      "stampColor": "b",
-      "quote": "A gentle spirit is often seen as weakness, but it is not so.\nShow your foes the power of underestimating humility.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [],
-      "studentOnlyMoves": [
-        {
-          "x": 0,
-          "y": 1
-        }
-      ],
-      "masterOnlyMoves": [
-        {
-          "x": 2,
-          "y": 2
-        },
-        {
-          "x": -2,
-          "y": 2
-        }
-      ],
-      "name": "Okija",
-      "stampColor": "r",
-      "quote": "Charge with conviction and string with the aged weapon of experience.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [],
-      "studentOnlyMoves": [
-        {
-          "x": 1,
-          "y": 1
-        },
-        {
-          "x": -1,
-          "y": 1
-        }
-      ],
-      "masterOnlyMoves": [
-        {
-          "x": 2,
-          "y": 0
-        },
-        {
-          "x": -2,
-          "y": 0
-        }
-      ],
-      "name": "Kumo",
-      "stampColor": "b",
-      "quote": "Every movement must be part of a plan. The opponent does not know it,\nbut they will see it when it has caught them in defeat.",
-      "movementBias": 0
-    },
-    {
-      "movesAvailable": [],
-      "studentOnlyMoves": [
-        {
-          "x": 2,
-          "y": 0
-        },
-        {
-          "x": -2,
-          "y": 0
-        }
-      ],
-      "masterOnlyMoves": [
-        {
-          "x": 1,
-          "y": 2
-        },
-        {
-          "x": -1,
-          "y": 2
-        }
-      ],
-      "name": "Sasori",
-      "stampColor": "r",
-      "quote": "Strike swiftly. Strike precisely. Strike with such confidence that\nyour foe will weaken before you have touched them.",
-      "movementBias": 0
-    }
-  ]
-}
+[
+  {
+    "movesAvailable": [
+      {
+        "x": 0,
+        "y": 2
+      },
+      {
+        "x": 0,
+        "y": -1
+      }
+    ],
+    "name": "Tiger",
+    "stampColor": "b",
+    "quote": "The power of your Art projects itself like a shadow.\nSense your opponent's fear and pounce with certainty and strength.",
+    "movementBias": 0,
+    "expansion": "base"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 2,
+        "y": 0
+      },
+      {
+        "x": -2,
+        "y": 0
+      }
+    ],
+    "name": "Crab",
+    "stampColor": "b",
+    "quote": "Move with your opponent's movements, as if you are the never ceasing tide.\nWhen the time is right, he will fall prey to your attack.",
+    "movementBias": 0,
+    "expansion": "base"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": -1,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": -1
+      },
+      {
+        "x": -1,
+        "y": -1
+      }
+    ],
+    "name": "Monkey",
+    "stampColor": "b",
+    "quote": "Without deception you cannot carry out strategy,\nwithout strategy you cannot control the opponent.",
+    "movementBias": 0,
+    "expansion": "base"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": -1
+      },
+      {
+        "x": -1,
+        "y": -1
+      }
+    ],
+    "name": "Crane",
+    "stampColor": "b",
+    "quote": "Make no unnecessary movement, conserving your strength until the time\nis right to strike. The true Art is a symphony of graceful strikes.",
+    "movementBias": 0,
+    "expansion": "base"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 2,
+        "y": 1
+      },
+      {
+        "x": -2,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": -1
+      },
+      {
+        "x": -1,
+        "y": -1
+      }
+    ],
+    "name": "Dragon",
+    "stampColor": "r",
+    "quote": "Be swift as the thunder that peals before you have a chance to cover your ears,\nfast as the lightning that flashes before you can blink your eyes.",
+    "movementBias": 0,
+    "expansion": "base"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": -1,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": -1,
+        "y": 0
+      }
+    ],
+    "name": "Elephant",
+    "stampColor": "r",
+    "quote": "Only the strong may pursue your Art. This is why it is the true Art,\nthe Art that cannot be stopped.",
+    "movementBias": 0,
+    "expansion": "base"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": -1,
+        "y": 1
+      },
+      {
+        "x": 0,
+        "y": -1
+      }
+    ],
+    "name": "Mantis",
+    "stampColor": "r",
+    "quote": "Your opponent sees, but does not understand. Distract the watchful, misguide\nthe wary. This is the Art of the Mantis, the Art of the deceptive strike.",
+    "movementBias": 0,
+    "expansion": "base"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": -1,
+        "y": 0
+      }
+    ],
+    "name": "Boar",
+    "stampColor": "r",
+    "quote": "Watch for opportunity, for it will present itself. Then strike, focusing all your\nmight into a single rush, trampling your opponent's Art under your own.",
+    "movementBias": 0,
+    "expansion": "base"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": -2,
+        "y": 0
+      },
+      {
+        "x": -1,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": -1
+      }
+    ],
+    "name": "Frog",
+    "stampColor": "r",
+    "quote": "Do not fail to learn from the pure voice of an ever-flowing mountain stream\nsplashing over the rocks. Emulate its flow, mimic its power.",
+    "movementBias": 2,
+    "expansion": "base"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": -1,
+        "y": 1
+      },
+      {
+        "x": -1,
+        "y": 0
+      },
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": 1,
+        "y": -1
+      }
+    ],
+    "name": "Goose",
+    "stampColor": "b",
+    "quote": "Your robes are your cloak of feathers; spread your wings to hide your intentions.\nEven then, as your opponent seeks to determine your motive, you shall strike.",
+    "movementBias": 2,
+    "expansion": "base"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": -1,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 0,
+        "y": -1
+      }
+    ],
+    "name": "Horse",
+    "stampColor": "r",
+    "quote": "Lose yourself in the rhythm of your Art. At times be swift and decisive,\nat other times measured and taunting.",
+    "movementBias": 2,
+    "expansion": "base"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": -1,
+        "y": 1
+      },
+      {
+        "x": -1,
+        "y": -1
+      },
+      {
+        "x": 1,
+        "y": 0
+      }
+    ],
+    "name": "Eel",
+    "stampColor": "b",
+    "quote": "If your opponent strikes with fire, counter with water,\nbecoming completely fluid and freeflowing.",
+    "movementBias": 2,
+    "expansion": "base"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 2,
+        "y": 0
+      },
+      {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": -1,
+        "y": -1
+      }
+    ],
+    "name": "Rabbit",
+    "stampColor": "b",
+    "quote": "Be near to your opponent, blinding him with your speed.\nThe Art of the Rabbit is the Art of speed.",
+    "movementBias": 1,
+    "expansion": "base"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": -1,
+        "y": 0
+      },
+      {
+        "x": -1,
+        "y": -1
+      }
+    ],
+    "name": "Rooster",
+    "stampColor": "r",
+    "quote": "Do not allow your enemy to rest, but focus your Art\nto deliver quick, sharp strikes whenever he lags.",
+    "movementBias": 1,
+    "expansion": "base"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 0,
+        "y": -1
+      }
+    ],
+    "name": "Ox",
+    "stampColor": "b",
+    "quote": "Put your strength into the forms of Art -\nin its punches, its kicks, in the steady advance of your aggression.",
+    "movementBias": 1,
+    "expansion": "base"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": -1
+      },
+      {
+        "x": -1,
+        "y": 0
+      }
+    ],
+    "name": "Cobra",
+    "stampColor": "r",
+    "quote": "Attack violently when your opponents are not expecting it -\nshow leisure in the beginning, then suddenly attack vigorously.",
+    "movementBias": 1,
+    "expansion": "base"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 0,
+        "y": -1
+      },
+      {
+        "x": 2,
+        "y": 1
+      },
+      {
+        "x": -2,
+        "y": 1
+      }
+    ],
+    "name": "Giraffe",
+    "stampColor": "b",
+    "quote": "Project your power, vaulting at opponents who believe themselves\nsafely out of range. Aggression is subservient to surprise.",
+    "movementBias": 0,
+    "expansion": "senseisPath"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 0,
+        "y": -2
+      },
+      {
+        "x": 1,
+        "y": 2
+      },
+      {
+        "x": -1,
+        "y": 2
+      }
+    ],
+    "name": "Kirin",
+    "stampColor": "r",
+    "quote": "There is Art in grace, Art in discernment, Art in sensing the truth. Pierce the veil\nof the shadow, and strike your opponent from a place of enlightenment.",
+    "movementBias": 0,
+    "expansion": "senseisPath"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": -1,
+        "y": 1
+      },
+      {
+        "x": 2,
+        "y": 0
+      },
+      {
+        "x": -2,
+        "y": 0
+      }
+    ],
+    "name": "Phoenix",
+    "stampColor": "b",
+    "quote": "No opponent expects that which he believes is not there. Harness the\nshadows, bend the sun, strike as the wind - from a place unseen.",
+    "movementBias": 0,
+    "expansion": "senseisPath"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 1,
+        "y": -1
+      },
+      {
+        "x": -1,
+        "y": -1
+      },
+      {
+        "x": 2,
+        "y": 0
+      },
+      {
+        "x": -2,
+        "y": 0
+      }
+    ],
+    "name": "Turtle",
+    "stampColor": "r",
+    "quote": "Within your sphere of power, your Art remains supreme.\nEngage your opponent and deflect his strikes.",
+    "movementBias": 0,
+    "expansion": "senseisPath"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": 1,
+        "y": -1
+      }
+    ],
+    "name": "Fox",
+    "stampColor": "r",
+    "quote": "Harry your opponent through your Art, give him no time to think, less time to act.",
+    "movementBias": 1,
+    "expansion": "senseisPath"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": -1,
+        "y": -1
+      }
+    ],
+    "name": "Panda",
+    "stampColor": "r",
+    "quote": "Your opponent watches for your complacency, so show it to him. Lull him into an\nattack, then unleash your Art when he has already committed to his attack.",
+    "movementBias": 1,
+    "expansion": "senseisPath"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 2,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": -1,
+        "y": -1
+      }
+    ],
+    "name": "Sea Snake",
+    "stampColor": "b",
+    "quote": "There is no movement or opportunity wasted. Strike where you are not\nexpected, flow where your opponent believes you cannot be.",
+    "movementBias": 1,
+    "expansion": "senseisPath"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": -1,
+        "y": -1
+      }
+    ],
+    "name": "Mouse",
+    "stampColor": "b",
+    "quote": "All opponents have a hole in their Art, an opening of weakness.\nThe Art of the Mouse is to find that opening, enter it, and strike.",
+    "movementBias": 1,
+    "expansion": "senseisPath"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 2,
+        "y": 1
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": -1,
+        "y": -1
+      }
+    ],
+    "name": "Tanuki",
+    "stampColor": "b",
+    "quote": "The Art of the Tanuki is the art of opportunity.\nPatience will open the door to the perfect angle of your strike.",
+    "movementBias": 1,
+    "expansion": "senseisPath"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": -1,
+        "y": -1
+      },
+      {
+        "x": -2,
+        "y": 0
+      }
+    ],
+    "name": "Sable",
+    "stampColor": "b",
+    "quote": "Be fluid, and control the battlefield with constant movement\nand precision strikes.",
+    "movementBias": 1,
+    "expansion": "senseisPath"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": -1,
+        "y": 1
+      },
+      {
+        "x": -1,
+        "y": 0
+      },
+      {
+        "x": -1,
+        "y": -1
+      }
+    ],
+    "name": "Dog",
+    "stampColor": "b",
+    "quote": "Deny your opponent his Art. Once you have blocked his attack,\ndo not let him go, but instead, relentlessly hamper his momentum.",
+    "movementBias": 2,
+    "expansion": "senseisPath"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": -1,
+        "y": 1
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": -1
+      }
+    ],
+    "name": "Bear",
+    "stampColor": "b",
+    "quote": "Defend your ground. Do not be like those fools who are quick to run to attack from\nanother position. They have lost the fight because they have already run from it.",
+    "movementBias": 2,
+    "expansion": "senseisPath"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": -2,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": -1
+      }
+    ],
+    "name": "Viper",
+    "stampColor": "r",
+    "quote": "The Art of the Viper is to strike in the Moment. This is the true Art.",
+    "movementBias": 2,
+    "expansion": "senseisPath"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": -1,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": -1
+      }
+    ],
+    "name": "Rat",
+    "stampColor": "r",
+    "quote": "Your opponent cannot attack what he cannot predict.\nLet your movements be immediate, your attacks be unexpected.",
+    "movementBias": 2,
+    "expansion": "senseisPath"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": -2,
+        "y": 1
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": -1
+      }
+    ],
+    "name": "Iguana",
+    "stampColor": "r",
+    "quote": "While your opponents wears himself out with unnecessary movement, you will\ngather your strength. A devastating sweep or fatal punch is the pinnacle of the Art.",
+    "movementBias": 2,
+    "expansion": "senseisPath"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": -1,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": -1
+      },
+      {
+        "x": 2,
+        "y": 0
+      }
+    ],
+    "name": "Otter",
+    "stampColor": "r",
+    "quote": "Who can stop the flowing stream? The Art of the Otter is the Art of Power,\nknocking away the advances of the opponent through sustained, powerful strikes.",
+    "movementBias": 2,
+    "expansion": "senseisPath"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": -1,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": -1
+      }
+    ],
+    "name": "Goat",
+    "stampColor": "r",
+    "quote": "Strategy flows from the mind. Deny your opponents clear thought through strikes\nat their head and eyes, and their strategy will fail, providing the chance to strike.",
+    "movementBias": 1,
+    "expansion": "wayOfTheWind"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": -1,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": -1
+      }
+    ],
+    "name": "Sheep",
+    "stampColor": "b",
+    "quote": "Follow your opponent's movements, shadow his forms. The Art of the Sheep is the\nart of knowing, and of using your opponent's strengths against his weaknesses.",
+    "movementBias": 2,
+    "expansion": "wayOfTheWind"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": -1,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 2,
+        "y": -2
+      }
+    ],
+    "name": "Centipede",
+    "stampColor": "r",
+    "quote": "Mesmerize your opponent with many movements. Your real attack\nwill come unexpectedly.",
+    "movementBias": 2,
+    "expansion": "promotional"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": -2,
+        "y": -2
+      }
+    ],
+    "name": "Hornet",
+    "stampColor": "b",
+    "quote": "Distract your opponent from above while striking from below.\nYour venom will weaken their fortitude.",
+    "movementBias": 1,
+    "expansion": "promotional"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": -1,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 2,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": -2
+      }
+    ],
+    "name": "Cat",
+    "stampColor": "r",
+    "quote": "Avoidance can lead to victory as much as aggression.",
+    "movementBias": 1,
+    "expansion": "promotional"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": -2,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": -2
+      }
+    ],
+    "name": "Serow",
+    "stampColor": "b",
+    "quote": "Knowing when to dodge is key to overcoming obstacles.",
+    "movementBias": 2,
+    "expansion": "promotional"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": -1,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": -1,
+        "y": -2
+      },
+      {
+        "x": 1,
+        "y": -2
+      }
+    ],
+    "name": "Lobster",
+    "stampColor": "r",
+    "quote": "Your Art must be both fluid and precise, like the convergence of Ocean and Air.",
+    "movementBias": 0,
+    "expansion": "promotional"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": -1,
+        "y": 0
+      },
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": -1,
+        "y": -1
+      },
+      {
+        "x": 1,
+        "y": -1
+      }
+    ],
+    "name": "Steer",
+    "stampColor": "b",
+    "quote": "Your Art comes from your core; only with nourished stomach\nwill you find the strength to conquer your adversaries.",
+    "movementBias": 0,
+    "expansion": "promotional"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 0,
+        "y": -1
+      },
+      {
+        "x": 2,
+        "y": 1
+      },
+      {
+        "x": -2,
+        "y": 1
+      }
+    ],
+    "name": "Butterfly",
+    "stampColor": "r",
+    "quote": "Let the wind carry your strikes fiercely.",
+    "movementBias": 0,
+    "expansion": "promotional"
+  },
+  {
+    "movesAvailable": [
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 2,
+        "y": -1
+      },
+      {
+        "x": -2,
+        "y": -1
+      }
+    ],
+    "name": "Moth",
+    "stampColor": "b",
+    "quote": "Strike your opponent from the darkness pushing them into the light.",
+    "movementBias": 0,
+    "expansion": "promotional"
+  },
+  {
+    "movesAvailable": [],
+    "studentOnlyMoves": [
+      {
+        "x": 2,
+        "y": 1
+      },
+      {
+        "x": -2,
+        "y": 1
+      }
+    ],
+    "masterOnlyMoves": [
+      {
+        "x": 0,
+        "y": 1
+      }
+    ],
+    "name": "Mejika",
+    "stampColor": "b",
+    "quote": "A gentle spirit is often seen as weakness, but it is not so.\nShow your foes the power of underestimating humility.",
+    "movementBias": 0,
+    "expansion": "promotional"
+  },
+  {
+    "movesAvailable": [],
+    "studentOnlyMoves": [
+      {
+        "x": 0,
+        "y": 1
+      }
+    ],
+    "masterOnlyMoves": [
+      {
+        "x": 2,
+        "y": 2
+      },
+      {
+        "x": -2,
+        "y": 2
+      }
+    ],
+    "name": "Okija",
+    "stampColor": "r",
+    "quote": "Charge with conviction and string with the aged weapon of experience.",
+    "movementBias": 0,
+    "expansion": "promotional"
+  },
+  {
+    "movesAvailable": [],
+    "studentOnlyMoves": [
+      {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": -1,
+        "y": 1
+      }
+    ],
+    "masterOnlyMoves": [
+      {
+        "x": 2,
+        "y": 0
+      },
+      {
+        "x": -2,
+        "y": 0
+      }
+    ],
+    "name": "Kumo",
+    "stampColor": "b",
+    "quote": "Every movement must be part of a plan. The opponent does not know it,\nbut they will see it when it has caught them in defeat.",
+    "movementBias": 0,
+    "expansion": "promotional"
+  },
+  {
+    "movesAvailable": [],
+    "studentOnlyMoves": [
+      {
+        "x": 2,
+        "y": 0
+      },
+      {
+        "x": -2,
+        "y": 0
+      }
+    ],
+    "masterOnlyMoves": [
+      {
+        "x": 1,
+        "y": 2
+      },
+      {
+        "x": -1,
+        "y": 2
+      }
+    ],
+    "name": "Sasori",
+    "stampColor": "r",
+    "quote": "Strike swiftly. Strike precisely. Strike with such confidence that\nyour foe will weaken before you have touched them.",
+    "movementBias": 0,
+    "expansion": "promotional"
+  }
+]

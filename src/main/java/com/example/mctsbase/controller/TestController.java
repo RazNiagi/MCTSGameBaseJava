@@ -3,10 +3,8 @@ package com.example.mctsbase.controller;
 import com.example.mctsbase.enums.BoardGameScore;
 import com.example.mctsbase.model.ConnectFourGameState;
 import com.example.mctsbase.model.MCTSNode;
-import com.example.mctsbase.service.BoardImportExportService;
-import com.example.mctsbase.service.ConnectFourMoveService;
-import com.example.mctsbase.service.ConnectFourService;
-import com.example.mctsbase.service.MCTSService;
+import com.example.mctsbase.model.OnitamaGameState;
+import com.example.mctsbase.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +18,8 @@ public class TestController {
     @Autowired
     private ConnectFourService connectFourService;
     @Autowired
+    private OnitamaGameService onitamaGameService;
+    @Autowired
     private BoardImportExportService boardImportExportService;
     @Autowired
     private ConnectFourMoveService connectFourMoveService;
@@ -30,7 +30,7 @@ public class TestController {
     @RequestMapping(value="/test", method = RequestMethod.GET)
     public String test() {
 
-        ConnectFourGameState board = connectFourService.initializeBoard(ConnectFourGameState.builder().build());
+        ConnectFourGameState board = connectFourService.initializeGameState(ConnectFourGameState.builder().build());
         connectFourService.printBoard(board);
         while (board.getBoardGameScore() == BoardGameScore.UNDETERMINED) {
             MCTSNode mctsNode = MCTSNode.builder()
@@ -51,10 +51,20 @@ public class TestController {
         return "";
     }
 
+    @RequestMapping(value="/testOnitamaInit", method = RequestMethod.GET)
+    public String testOnitamaInit() {
+
+        OnitamaGameState board = onitamaGameService.initializeGameState(OnitamaGameState.builder().build());
+        onitamaGameService.printBoard(board);
+
+
+        return "";
+    }
+
     @PostMapping(value="/testParallel/{threads}")
     public String testParallel(@PathVariable Integer threads) {
 
-        ConnectFourGameState board = connectFourService.initializeBoard(ConnectFourGameState.builder().build());
+        ConnectFourGameState board = connectFourService.initializeGameState(ConnectFourGameState.builder().build());
         connectFourService.printBoard(board);
 
         while (board.getBoardGameScore() == BoardGameScore.UNDETERMINED) {

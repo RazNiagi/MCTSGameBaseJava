@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class ConnectFourService implements BaseGameService<ConnectFourGameState> {
-    public ConnectFourGameState initializeBoard(ConnectFourGameState gameState) {
+    public ConnectFourGameState initializeGameState(ConnectFourGameState gameState) {
         char[][] newBoard = new char[6][7];
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 7; j++) {
