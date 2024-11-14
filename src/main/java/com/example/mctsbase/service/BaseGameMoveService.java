@@ -6,6 +6,6 @@ import com.example.mctsbase.model.BaseGameState;
 import java.util.List;
 
 public interface BaseGameMoveService<T extends BaseGameState> {
-    public List<T> possibleNextBoards(T gameState);
-    public BoardGameScore checkBoardForWins(T gameState);
+    List<T> possibleNextBoards(T gameState);
+    BoardGameScore checkBoardForWins(T gameState);
 }
