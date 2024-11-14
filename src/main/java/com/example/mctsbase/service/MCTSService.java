@@ -1,6 +1,6 @@
 package com.example.mctsbase.service;
 
-import com.example.mctsbase.enums.ConnectFourScore;
+import com.example.mctsbase.enums.BoardGameScore;
 import com.example.mctsbase.model.ConnectFourGameState;
 import com.example.mctsbase.model.MCTSNode;
 import lombok.SneakyThrows;
@@ -120,12 +120,12 @@ public class MCTSService {
         return firstTerm + secondTerm;
     }
 
-    public void updateNode(MCTSNode mctsNode, ConnectFourScore score) {
+    public void updateNode(MCTSNode mctsNode, BoardGameScore score) {
         // Update the evaluation of the node
-        if ((score.equals(ConnectFourScore.RED_WIN) && mctsNode.getBoard().getCurrentTurn() == 'y') || (score.equals(ConnectFourScore.YELLOW_WIN) && mctsNode.getBoard().getCurrentTurn() == 'r')) {
+        if ((score.equals(BoardGameScore.RED_WIN) && mctsNode.getBoard().getCurrentTurn() == 'y') || (score.equals(BoardGameScore.YELLOW_WIN) && mctsNode.getBoard().getCurrentTurn() == 'r')) {
             mctsNode.setScore(mctsNode.getScore() + 1);
         }
-        if (score.equals(ConnectFourScore.TIE)) {
+        if (score.equals(BoardGameScore.TIE)) {
             mctsNode.setScore(mctsNode.getScore() + 0.5);
         }
         mctsNode.setTimesVisited(mctsNode.getTimesVisited() + 1);
@@ -155,7 +155,7 @@ public class MCTSService {
         while (!isNodeTerminal(mctsNode)) {
             mctsNode = rolloutPolicy(mctsNode);
         }
-        backPropagate(mctsNode, mctsNode.getBoard().getConnectFourScore());
+        backPropagate(mctsNode, mctsNode.getBoard().getBoardGameScore());
     }
 
     public MCTSNode rolloutPolicy(MCTSNode mctsNode) {
@@ -180,7 +180,7 @@ public class MCTSService {
 
     public boolean isNodeTerminal(MCTSNode mctsNode) {
         // Check for win, tie, or if equals or exceeds max depth
-        if (!ConnectFourScore.UNDETERMINED.equals(mctsNode.getBoard().getConnectFourScore())) {
+        if (!BoardGameScore.UNDETERMINED.equals(mctsNode.getBoard().getBoardGameScore())) {
             return true;
         }
         if (mctsNode.getUnexplored().isEmpty()) {
@@ -219,7 +219,7 @@ public class MCTSService {
     }
 
     // Update the node and then move up the tree, updating all the nodes along the way
-    public void backPropagate(MCTSNode mctsNode, ConnectFourScore score) {
+    public void backPropagate(MCTSNode mctsNode, BoardGameScore score) {
         updateNode(mctsNode, score);
         if (!mctsNode.isRoot() && mctsNode.getParent() != null) {
             backPropagate(mctsNode.getParent(), score);

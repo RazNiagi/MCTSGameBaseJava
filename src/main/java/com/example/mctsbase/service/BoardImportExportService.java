@@ -29,7 +29,7 @@ public class BoardImportExportService {
             }
         }
         newBoard.setCurrentTurn(moveCount % 2 == 0 ? 'r' : 'y');
-        newBoard.setConnectFourScore(connectFourMoveService.checkBoardForWins(newBoard));
+        newBoard.setBoardGameScore(connectFourMoveService.checkBoardForWins(newBoard));
         return newBoard;
     }
 

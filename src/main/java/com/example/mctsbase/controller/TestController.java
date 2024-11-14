@@ -1,6 +1,6 @@
 package com.example.mctsbase.controller;
 
-import com.example.mctsbase.enums.ConnectFourScore;
+import com.example.mctsbase.enums.BoardGameScore;
 import com.example.mctsbase.model.ConnectFourGameState;
 import com.example.mctsbase.model.MCTSNode;
 import com.example.mctsbase.service.BoardImportExportService;
@@ -33,9 +33,9 @@ public class TestController {
         ConnectFourGameState board = ConnectFourGameState.builder().build();
         connectFourService.initializeBoard(board);
         board.setCurrentTurn('r');
-        board.setConnectFourScore(ConnectFourScore.UNDETERMINED);
+        board.setBoardGameScore(BoardGameScore.UNDETERMINED);
         connectFourService.printBoard(board);
-        while (board.getConnectFourScore() == ConnectFourScore.UNDETERMINED) {
+        while (board.getBoardGameScore() == BoardGameScore.UNDETERMINED) {
             MCTSNode mctsNode = MCTSNode.builder()
                     .depth(0)
                     .root(true)
@@ -60,10 +60,10 @@ public class TestController {
         ConnectFourGameState board = ConnectFourGameState.builder().build();
         connectFourService.initializeBoard(board);
         board.setCurrentTurn('r');
-        board.setConnectFourScore(ConnectFourScore.UNDETERMINED);
+        board.setBoardGameScore(BoardGameScore.UNDETERMINED);
         connectFourService.printBoard(board);
 
-        while (board.getConnectFourScore() == ConnectFourScore.UNDETERMINED) {
+        while (board.getBoardGameScore() == BoardGameScore.UNDETERMINED) {
             MCTSNode mctsNode = MCTSNode.builder()
                     .depth(0)
                     .root(true)

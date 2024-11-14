@@ -1,6 +1,6 @@
 package com.example.mctsbase.service;
 
-import com.example.mctsbase.enums.ConnectFourScore;
+import com.example.mctsbase.enums.BoardGameScore;
 import com.example.mctsbase.model.ConnectFourGameState;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -45,7 +45,7 @@ public class ConnectFourMoveService {
     }
 
     public List<ConnectFourGameState> possibleNextBoards(ConnectFourGameState board) {
-        if (!ConnectFourScore.UNDETERMINED.equals(board.getConnectFourScore())) {
+        if (!BoardGameScore.UNDETERMINED.equals(board.getBoardGameScore())) {
             return new ArrayList<>();
         }
         List<ConnectFourGameState> possibleNextBoards = new ArrayList<>();
@@ -60,7 +60,7 @@ public class ConnectFourMoveService {
         return possibleNextBoards;
     }
 
-    public ConnectFourScore checkBoardForWins(ConnectFourGameState board) {
+    public BoardGameScore checkBoardForWins(ConnectFourGameState board) {
         boolean redWin = false;
         boolean yellowWin = false;
         char[][] currentBoard = board.getBoard();
@@ -109,22 +109,22 @@ public class ConnectFourMoveService {
             }
         }
         if (redWin && yellowWin) {
-            board.setConnectFourScore(ConnectFourScore.INVALID_BOARD);
-            return ConnectFourScore.INVALID_BOARD;
+            board.setBoardGameScore(BoardGameScore.INVALID_BOARD);
+            return BoardGameScore.INVALID_BOARD;
         }
         if (redWin) {
-            board.setConnectFourScore(ConnectFourScore.RED_WIN);
-            return ConnectFourScore.RED_WIN;
+            board.setBoardGameScore(BoardGameScore.RED_WIN);
+            return BoardGameScore.RED_WIN;
         }
         if (yellowWin) {
-            board.setConnectFourScore(ConnectFourScore.YELLOW_WIN);
-            return ConnectFourScore.YELLOW_WIN;
+            board.setBoardGameScore(BoardGameScore.YELLOW_WIN);
+            return BoardGameScore.YELLOW_WIN;
         }
         if (getAllLegalMoves(board).isEmpty()) {
-            board.setConnectFourScore(ConnectFourScore.TIE);
-            return ConnectFourScore.TIE;
+            board.setBoardGameScore(BoardGameScore.TIE);
+            return BoardGameScore.TIE;
         }
-        return ConnectFourScore.UNDETERMINED;
+        return BoardGameScore.UNDETERMINED;
     }
 
     private boolean checkVertical(char[][] board, int i, int j) {

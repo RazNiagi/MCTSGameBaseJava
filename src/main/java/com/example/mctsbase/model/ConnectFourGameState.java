@@ -1,6 +1,6 @@
 package com.example.mctsbase.model;
 
-import com.example.mctsbase.enums.ConnectFourScore;
+import com.example.mctsbase.enums.BoardGameScore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,14 +15,14 @@ import java.util.Arrays;
 public class ConnectFourGameState {
     private char[][] board = new char[6][7];
     private char currentTurn = 'r';
-    private ConnectFourScore connectFourScore = ConnectFourScore.UNDETERMINED;
+    private BoardGameScore boardGameScore = BoardGameScore.UNDETERMINED;
 
     public void switchTurn() {
         this.currentTurn = this.currentTurn == 'r' ? 'y' : 'r';
     }
 
     public boolean equals(ConnectFourGameState other) {
-        return Arrays.deepEquals(this.board, other.board) && this.currentTurn == other.currentTurn && this.connectFourScore == other.connectFourScore;
+        return Arrays.deepEquals(this.board, other.board) && this.currentTurn == other.currentTurn && this.boardGameScore == other.getBoardGameScore();
     }
 
     public static ConnectFourGameState cloneBoard(ConnectFourGameState board) {
@@ -32,7 +32,7 @@ public class ConnectFourGameState {
         }
         return ConnectFourGameState.builder()
                 .currentTurn(board.getCurrentTurn())
-                .connectFourScore(board.getConnectFourScore())
+                .boardGameScore(board.getBoardGameScore())
                 .board(newBoardArray)
                 .build();
     }
