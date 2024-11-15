@@ -2,7 +2,7 @@ package com.example.mctsbase.controller;
 
 import com.example.mctsbase.enums.BoardGameScore;
 import com.example.mctsbase.model.ConnectFourGameState;
-import com.example.mctsbase.model.MCTSNode;
+import com.example.mctsbase.model.ConnectFourMCTSNode;
 import com.example.mctsbase.model.OnitamaGameState;
 import com.example.mctsbase.service.*;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class TestController {
         ConnectFourGameState board = connectFourService.initializeGameState(ConnectFourGameState.builder().build());
         connectFourService.printBoard(board);
         while (board.getBoardGameScore() == BoardGameScore.UNDETERMINED) {
-            MCTSNode mctsNode = MCTSNode.builder()
+            ConnectFourMCTSNode mctsNode = ConnectFourMCTSNode.builder()
                     .depth(0)
                     .root(true)
                     .unexplored(new ArrayList<>(connectFourMoveService.possibleNextBoards(board)))
@@ -68,7 +68,7 @@ public class TestController {
         connectFourService.printBoard(board);
 
         while (board.getBoardGameScore() == BoardGameScore.UNDETERMINED) {
-            MCTSNode mctsNode = MCTSNode.builder()
+            ConnectFourMCTSNode mctsNode = ConnectFourMCTSNode.builder()
                     .depth(0)
                     .root(true)
                     .unexplored(new ArrayList<>(connectFourMoveService.possibleNextBoards(board)))
@@ -92,7 +92,7 @@ public class TestController {
         ConnectFourGameState board = boardImportExportService.importBoard(boardstring);
         connectFourService.printBoard(board);
 
-        MCTSNode mctsNode = MCTSNode.builder()
+        ConnectFourMCTSNode mctsNode = ConnectFourMCTSNode.builder()
                 .depth(0)
                 .root(true)
                 .unexplored(new ArrayList<>(connectFourMoveService.possibleNextBoards(board)))

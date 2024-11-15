@@ -1,24 +1,19 @@
 package com.example.mctsbase.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @Data
-@Builder(toBuilder = true)
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class MCTSNode {
-    private boolean root;
-    private int depth;
-    private int timesVisited;
-    private double currentValue;
+public class ConnectFourMCTSNode extends BaseMCTSNode {
     private ConnectFourGameState board;
-    private List<MCTSNode> children;
-    private MCTSNode parent;
+    private List<ConnectFourMCTSNode> children;
+    private ConnectFourMCTSNode parent;
     private List<ConnectFourGameState> unexplored;
-    private double score;
 }
