@@ -20,6 +20,8 @@ import java.util.stream.IntStream;
 public class OnitamaGameService implements BaseGameService<OnitamaGameState> {
     @Autowired
     private OnitamaMovementCardService onitamaMovementCardService;
+    @Autowired
+    private OnitamaGameMoveService onitamaGameMoveService;
 
     public OnitamaGameState initializeGameState(OnitamaGameState gameState) {
         char[][] newBoard = new char[5][5];
@@ -41,14 +43,14 @@ public class OnitamaGameService implements BaseGameService<OnitamaGameState> {
         gameState.setBoardGameScore(BoardGameScore.UNDETERMINED);
         List<OnitamaMovementCard> possibleMovementCards = onitamaMovementCardService.getOnitamaMovementCardsFromExpansions(Collections.singletonList(OnitamaExpansion.BASE));
         Collections.shuffle(possibleMovementCards);
-        gameState.getRedPlayerMovementCards().add(possibleMovementCards.removeFirst());
-        gameState.getRedPlayerMovementCards().add(possibleMovementCards.removeFirst());
-        gameState.getBluePlayerMovementCards().add(possibleMovementCards.removeFirst());
-        gameState.getBluePlayerMovementCards().add(possibleMovementCards.removeFirst());
+        gameState.getRedPlayerMovementCards().add(OnitamaSimpleMovementCard.cloneCard(possibleMovementCards.removeFirst()));
+        gameState.getRedPlayerMovementCards().add(OnitamaSimpleMovementCard.cloneCard(possibleMovementCards.removeFirst()));
+        gameState.getBluePlayerMovementCards().add(OnitamaSimpleMovementCard.cloneCard(possibleMovementCards.removeFirst()));
+        gameState.getBluePlayerMovementCards().add(OnitamaSimpleMovementCard.cloneCard(possibleMovementCards.removeFirst()));
         gameState.setCurrentTurn(possibleMovementCards.getFirst().getStampColor());
-        gameState.setMiddleCard(possibleMovementCards.removeFirst());
+        gameState.setMiddleCard(OnitamaSimpleMovementCard.cloneCard(possibleMovementCards.removeFirst()));
         if (gameState.getCurrentTurn() != gameState.getBoard()[0][0]) {
-            gameState.setBoard(rotateBoard(gameState.getBoard()));
+            gameState.setBoard(onitamaGameMoveService.rotateBoard(gameState.getBoard()));
         }
 
         return gameState;
@@ -81,20 +83,10 @@ public class OnitamaGameService implements BaseGameService<OnitamaGameState> {
         gameState.setCurrentTurn(possibleMovementCards.getFirst().getStampColor());
         gameState.setMiddleCard(possibleMovementCards.removeFirst());
         if (gameState.getCurrentTurn() != gameState.getBoard()[0][0]) {
-            gameState.setBoard(rotateBoard(gameState.getBoard()));
+            gameState.setBoard(onitamaGameMoveService.rotateBoard(gameState.getBoard()));
         }
 
         return gameState;
-    }
-
-    public char[][] rotateBoard(char[][] board) {
-        char[][] newBoard = new char[5][5];
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                newBoard[i][j] = board[4 - i][4 - j];
-            }
-        }
-        return newBoard;
     }
 
     public void printBoard(OnitamaGameState gameState) {

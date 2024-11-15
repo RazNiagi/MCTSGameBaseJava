@@ -35,7 +35,7 @@ public class OnitamaMovementCardService {
     }
 
     public List<OnitamaMovementCard> getOnitamaMovementCardsFromExpansions(List<OnitamaExpansion> expansions) {
-        List<String> expansionNames = expansions.stream().map(OnitamaExpansion::name).toList();
+        List<String> expansionNames = expansions.stream().map(expansion -> expansion.name).toList();
         return new ArrayList<>(onitamaMovementCards.stream().filter(card -> expansionNames.contains(card.getExpansion())).toList());
     }
 
@@ -45,5 +45,9 @@ public class OnitamaMovementCardService {
 
     public List<OnitamaMovementCard> getFilteredCardsFromNames(List<String> names) {
         return new ArrayList<>(onitamaMovementCards.stream().filter(card -> names.contains(card.getName())).toList());
+    }
+
+    public OnitamaMovementCard getCardFromName(String name) {
+        return onitamaMovementCards.stream().filter(card -> name.equals(card.getName())).findFirst().orElse(null);
     }
 }

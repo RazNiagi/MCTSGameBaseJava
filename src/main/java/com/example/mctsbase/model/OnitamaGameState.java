@@ -35,13 +35,17 @@ public class OnitamaGameState extends BaseGameState {
         for (int i = 0; i < 5; i++) {
             newBoardArray[i] = Arrays.copyOf(board.getBoard()[i], newBoardArray[i].length);
         }
+        List<OnitamaSimpleMovementCard> newBluePlayerMovementCards = new ArrayList<>();
+        List<OnitamaSimpleMovementCard> newRedPlayerMovementCards = new ArrayList<>();
+        board.getBluePlayerMovementCards().forEach(card -> newBluePlayerMovementCards.add(OnitamaSimpleMovementCard.cloneCard(card)));
+        board.getRedPlayerMovementCards().forEach(card -> newRedPlayerMovementCards.add(OnitamaSimpleMovementCard.cloneCard(card)));
         return OnitamaGameState.builder()
                 .currentTurn(board.getCurrentTurn())
                 .boardGameScore(board.getBoardGameScore())
                 .board(newBoardArray)
-                .bluePlayerMovementCards(board.getBluePlayerMovementCards())
-                .redPlayerMovementCards(board.getRedPlayerMovementCards())
-                .middleCard(board.getMiddleCard())
+                .bluePlayerMovementCards(newBluePlayerMovementCards)
+                .redPlayerMovementCards(newRedPlayerMovementCards)
+                .middleCard(OnitamaSimpleMovementCard.cloneCard(board.getMiddleCard()))
                 .build();
     }
 }
