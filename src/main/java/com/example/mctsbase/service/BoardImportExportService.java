@@ -1,7 +1,7 @@
 package com.example.mctsbase.service;
 
 import com.example.mctsbase.model.ConnectFourGameState;
-import com.example.mctsbase.model.ConnectFourMCTSNode;
+import com.example.mctsbase.model.BaseMCTSNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -33,22 +33,22 @@ public class BoardImportExportService {
         return newBoard;
     }
 
-    public ConnectFourMCTSNode importNode(String boardFileName) {
+    public BaseMCTSNode importNode(String boardFileName) {
         String rootPath = System.getProperty("user.dir");
         File file = new File(StringUtils.join(rootPath, "/MCTSConnectFour/", boardFileName, ".txt"));
         try {
             if (!file.exists()) {
                 return null;
             }
-            return mapper.readValue(file, ConnectFourMCTSNode.class);
+            return mapper.readValue(file, BaseMCTSNode.class);
         } catch (IOException e) {
             log.error("Node file import failed", e);
             return null;
         }
     }
 
-    public boolean saveNode(ConnectFourMCTSNode mctsNode) {
-        String boardAsString = convertBoardToFileName(mctsNode.getBoard());
+    public boolean saveNode(BaseMCTSNode mctsNode) {
+        String boardAsString = convertBoardToFileName((ConnectFourGameState) mctsNode.getBoard());
         String rootPath = System.getProperty("user.dir");
         File file = new File(StringUtils.join(rootPath, "/MCTSConnectFour/", boardAsString, ".txt"));
         try {

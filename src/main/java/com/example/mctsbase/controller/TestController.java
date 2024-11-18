@@ -1,13 +1,11 @@
 package com.example.mctsbase.controller;
 
 import com.example.mctsbase.enums.BoardGameScore;
-import com.example.mctsbase.model.ConnectFourGameState;
-import com.example.mctsbase.model.ConnectFourMCTSNode;
-import com.example.mctsbase.model.OnitamaGameState;
-import com.example.mctsbase.model.OnitamaSimpleMovementCard;
+import com.example.mctsbase.model.*;
 import com.example.mctsbase.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -26,9 +24,11 @@ public class TestController {
     @Autowired
     private ConnectFourMoveService connectFourMoveService;
     @Autowired
-    private MCTSService mctsService;
+    private ConnectFourMCTSService c4mctsService;
     @Autowired
     private OnitamaGameMoveService onitamaGameMoveService;
+    @Autowired
+    private OnitamaGameMCTSService onitamaGameMCTSService;
 
 
     @RequestMapping(value="/test", method = RequestMethod.GET)
@@ -36,21 +36,92 @@ public class TestController {
 
         ConnectFourGameState board = connectFourService.initializeGameState(ConnectFourGameState.builder().build());
         connectFourService.printBoard(board);
-        while (board.getBoardGameScore() == BoardGameScore.UNDETERMINED) {
-            ConnectFourMCTSNode mctsNode = ConnectFourMCTSNode.builder()
-                    .depth(0)
-                    .root(true)
-                    .unexplored(new ArrayList<>(connectFourMoveService.possibleNextBoards(board)))
-                    .children(new ArrayList<>())
-                    .parent(null)
-                    .timesVisited(0)
-                    .score(0.0)
-                    .currentValue(0.0)
-                    .board(board)
-                    .build();
-            board = mctsService.connectFourMCTS(mctsNode, 0, 2000);
-            connectFourService.printBoard(board);
+        BaseMCTSNode mctsNode = BaseMCTSNode.builder()
+                .depth(0)
+                .root(true)
+                .unexplored(new ArrayList<>(connectFourMoveService.possibleNextBoards(board)))
+                .children(new ArrayList<>())
+                .parent(null)
+                .timesVisited(0)
+                .score(0.0)
+                .currentValue(0.0)
+                .board(board)
+                .build();
+        while (mctsNode.getBoard().getBoardGameScore() == BoardGameScore.UNDETERMINED) {
+            mctsNode = c4mctsService.monteCarloTreeSearch(mctsNode, 0, 2000);
+            mctsNode.setParent(null);
+            mctsNode.setRoot(true);
+            connectFourService.printBoard((ConnectFourGameState) mctsNode.getBoard());
         }
+
+        return "";
+    }
+
+    @RequestMapping(value="/testOnitama", method = RequestMethod.GET)
+    public String testOnitama() {
+
+        OnitamaGameState board = onitamaGameService.initializeGameState(OnitamaGameState.builder().build());
+        onitamaGameService.printBoard(board);
+        BaseMCTSNode mctsNode = BaseMCTSNode.builder()
+                .depth(0)
+                .root(true)
+                .unexplored(new ArrayList<>(onitamaGameMoveService.possibleNextBoards(board)))
+                .children(new ArrayList<>())
+                .parent(null)
+                .timesVisited(0)
+                .score(0.0)
+                .currentValue(0.0)
+                .board(board)
+                .build();
+        mctsNode = onitamaGameMCTSService.monteCarloTreeSearch(mctsNode, 10, 5000);
+        mctsNode.setParent(null);
+        mctsNode.setRoot(true);
+        onitamaGameService.printBoard((OnitamaGameState) mctsNode.getBoard());
+
+        return "";
+    }
+
+    @RequestMapping(value="/testOnitamaParallel", method = RequestMethod.GET)
+    public String testOnitamaParallel() {
+
+        OnitamaGameState board = onitamaGameService.initializeGameState(OnitamaGameState.builder().build());
+        onitamaGameService.printBoard(board);
+        BaseMCTSNode mctsNode = BaseMCTSNode.builder()
+                .depth(0)
+                .root(true)
+                .unexplored(new ArrayList<>(onitamaGameMoveService.possibleNextBoards(board)))
+                .children(new ArrayList<>())
+                .parent(null)
+                .timesVisited(0)
+                .score(0.0)
+                .currentValue(0.0)
+                .board(board)
+                .build();
+        while (mctsNode.getBoard().getBoardGameScore() == BoardGameScore.UNDETERMINED) {
+            mctsNode = onitamaGameMCTSService.parallelMCTS(mctsNode, 10, 2000, 4);
+            onitamaGameService.printBoard((OnitamaGameState) mctsNode.getBoard());
+        }
+
+        return "";
+    }
+
+    @PostMapping(value="/testOnitamaParallel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String testOnitamaParallel_fromBoard(@RequestBody OnitamaSimplifiedGameState simpleBoard) {
+        OnitamaGameState board = onitamaGameService.initializeGameStateFromSimplified(simpleBoard);
+        onitamaGameService.printBoard(board);
+        BaseMCTSNode mctsNode = BaseMCTSNode.builder()
+                .depth(0)
+                .root(true)
+                .unexplored(new ArrayList<>(onitamaGameMoveService.possibleNextBoards(board)))
+                .children(new ArrayList<>())
+                .parent(null)
+                .timesVisited(0)
+                .score(0.0)
+                .currentValue(0.0)
+                .board(board)
+                .build();
+        mctsNode = onitamaGameMCTSService.parallelMCTS(mctsNode, 10, 5000, 4);
+        onitamaGameService.printBoard((OnitamaGameState) mctsNode.getBoard());
 
         return "";
     }
@@ -79,7 +150,7 @@ public class TestController {
         connectFourService.printBoard(board);
 
         while (board.getBoardGameScore() == BoardGameScore.UNDETERMINED) {
-            ConnectFourMCTSNode mctsNode = ConnectFourMCTSNode.builder()
+            BaseMCTSNode mctsNode = BaseMCTSNode.builder()
                     .depth(0)
                     .root(true)
                     .unexplored(new ArrayList<>(connectFourMoveService.possibleNextBoards(board)))
@@ -90,7 +161,7 @@ public class TestController {
                     .currentValue(0.0)
                     .board(board)
                     .build();
-            board = mctsService.parallelMCTS(mctsNode, 0, 2000, threads);
+            board = c4mctsService.parallelMCTS(mctsNode, 0, 2000, threads);
             connectFourService.printBoard(board);
         }
 
@@ -103,7 +174,7 @@ public class TestController {
         ConnectFourGameState board = boardImportExportService.importBoard(boardstring);
         connectFourService.printBoard(board);
 
-        ConnectFourMCTSNode mctsNode = ConnectFourMCTSNode.builder()
+        BaseMCTSNode mctsNode = BaseMCTSNode.builder()
                 .depth(0)
                 .root(true)
                 .unexplored(new ArrayList<>(connectFourMoveService.possibleNextBoards(board)))
@@ -114,7 +185,7 @@ public class TestController {
                 .currentValue(0.0)
                 .board(board)
                 .build();
-        ConnectFourGameState newboard = mctsService.connectFourMCTS(mctsNode, 0, 2000);
+        ConnectFourGameState newboard = (ConnectFourGameState) c4mctsService.monteCarloTreeSearch(mctsNode, 0, 2000).getBoard();
         connectFourService.printBoard(newboard);
 
         return "";

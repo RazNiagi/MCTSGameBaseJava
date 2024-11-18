@@ -19,7 +19,7 @@ public class OnitamaGameMoveService implements BaseGameMoveService<OnitamaGameSt
     @Autowired
     private OnitamaMovementCardService onitamaMovementCardService;
 
-    public OnitamaGameState makeMove(OnitamaGameState state, int startX, int startY, int deltaColumns, int deltaRows, String cardName) throws Exception {
+    public OnitamaGameState makeMove(OnitamaGameState state, int startX, int startY, int deltaColumns, int deltaRows, String cardName) {
         OnitamaGameState newState = OnitamaGameState.cloneBoard(state);
         newState.getBoard()[startX + deltaRows][startY + deltaColumns] = newState.getBoard()[startX][startY];
         newState.getBoard()[startX][startY] = '-';
@@ -31,7 +31,7 @@ public class OnitamaGameMoveService implements BaseGameMoveService<OnitamaGameSt
         movementCards.remove(movementCards.stream().filter(card -> card.getName().equals(cardName)).findFirst().get());
         newState.switchTurn();
         newState.setBoard(rotateBoard(newState.getBoard()));
-        checkBoardForWins(newState);
+        newState.setBoardGameScore(checkBoardForWins(newState));
         return newState;
     }
 
@@ -124,5 +124,17 @@ public class OnitamaGameMoveService implements BaseGameMoveService<OnitamaGameSt
             }
         }
         return newBoard;
+    }
+
+    public int numPiecesForColor(char[][] board, char color) {
+        int count = 0;
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (Character.toLowerCase(board[i][j]) == color) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 }

@@ -5,6 +5,7 @@ import com.example.mctsbase.enums.OnitamaExpansion;
 import com.example.mctsbase.model.OnitamaGameState;
 import com.example.mctsbase.model.OnitamaMovementCard;
 import com.example.mctsbase.model.OnitamaSimpleMovementCard;
+import com.example.mctsbase.model.OnitamaSimplifiedGameState;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -87,6 +88,35 @@ public class OnitamaGameService implements BaseGameService<OnitamaGameState> {
         }
 
         return gameState;
+    }
+
+    public OnitamaGameState initializeGameStateFromSimplified(OnitamaSimplifiedGameState gameState) {
+        OnitamaGameState newGameState = new OnitamaGameState();
+        newGameState.setBoard(convertBoardStringToBoard(gameState.getBoardString()));
+        newGameState.setCurrentTurn(gameState.getCurrentTurn());
+        newGameState.setBoardGameScore(gameState.getBoardGameScore());
+        for (String s : gameState.getRedPlayerMovementCards()) {
+            newGameState.getRedPlayerMovementCards().add(OnitamaSimpleMovementCard.cloneCard(onitamaMovementCardService.getCardFromName(s)));
+        }
+        for (String s : gameState.getBluePlayerMovementCards()) {
+            newGameState.getBluePlayerMovementCards().add(OnitamaSimpleMovementCard.cloneCard(onitamaMovementCardService.getCardFromName(s)));
+        }
+        newGameState.setMiddleCard(OnitamaSimpleMovementCard.cloneCard(onitamaMovementCardService.getCardFromName(gameState.getMiddleCard())));
+        if (newGameState.getCurrentTurn() != newGameState.getBoard()[0][0]) {
+            newGameState.setBoard(onitamaGameMoveService.rotateBoard(newGameState.getBoard()));
+        }
+
+        return newGameState;
+    }
+
+    public char[][] convertBoardStringToBoard(String boardString) {
+        char[][] board = new char[5][5];
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                board[i][j] = boardString.charAt(5 * i + j);
+            }
+        }
+        return board;
     }
 
     public void printBoard(OnitamaGameState gameState) {
