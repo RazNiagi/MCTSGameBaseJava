@@ -13,7 +13,7 @@ import java.util.*;
 public class BaseMCTSService<T extends BaseGameState> {
     protected final double explorationConstant = Math.sqrt(2.0);
     protected int maxDepth = 0;
-    protected List<BaseMCTSNode> nodes = new ArrayList<>();
+    protected List<BaseMCTSNode> nodes = Collections.synchronizedList(new ArrayList<>());
     protected BaseGameMoveService moveService;
 
     public BaseMCTSService() {

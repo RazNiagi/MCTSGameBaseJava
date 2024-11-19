@@ -61,7 +61,8 @@ public class TestController {
     public String testOnitama() {
 
         OnitamaGameState board = onitamaGameService.initializeGameState(OnitamaGameState.builder().build());
-        onitamaGameService.printBoard(board);
+        char startingTurn = board.getCurrentTurn();
+        onitamaGameService.printBoardFromCertainSide(board, startingTurn);
         BaseMCTSNode mctsNode = BaseMCTSNode.builder()
                 .depth(0)
                 .root(true)
@@ -73,11 +74,12 @@ public class TestController {
                 .currentValue(0.0)
                 .board(board)
                 .build();
-        mctsNode = onitamaGameMCTSService.monteCarloTreeSearch(mctsNode, 10, 5000);
-        mctsNode.setParent(null);
-        mctsNode.setRoot(true);
-        onitamaGameService.printBoard((OnitamaGameState) mctsNode.getBoard());
-
+        while (mctsNode.getBoard().getBoardGameScore() == BoardGameScore.UNDETERMINED) {
+            mctsNode = onitamaGameMCTSService.monteCarloTreeSearch(mctsNode, 10, 2000);
+            mctsNode.setParent(null);
+            mctsNode.setRoot(true);
+            onitamaGameService.printBoardFromCertainSide((OnitamaGameState) mctsNode.getBoard(), startingTurn);
+        }
         return "";
     }
 
@@ -85,7 +87,8 @@ public class TestController {
     public String testOnitamaParallel() {
 
         OnitamaGameState board = onitamaGameService.initializeGameState(OnitamaGameState.builder().build());
-        onitamaGameService.printBoard(board);
+        char startingTurn = board.getCurrentTurn();
+        onitamaGameService.printBoardFromCertainSide(board, startingTurn);
         BaseMCTSNode mctsNode = BaseMCTSNode.builder()
                 .depth(0)
                 .root(true)
@@ -99,7 +102,9 @@ public class TestController {
                 .build();
         while (mctsNode.getBoard().getBoardGameScore() == BoardGameScore.UNDETERMINED) {
             mctsNode = onitamaGameMCTSService.parallelMCTS(mctsNode, 10, 2000, 4);
-            onitamaGameService.printBoard((OnitamaGameState) mctsNode.getBoard());
+            mctsNode.setRoot(true);
+            mctsNode.setParent(null);
+            onitamaGameService.printBoardFromCertainSide((OnitamaGameState) mctsNode.getBoard(), startingTurn);
         }
 
         return "";

@@ -123,6 +123,22 @@ public class OnitamaGameService implements BaseGameService<OnitamaGameState> {
         for (int i = 4; i >= 0; i--) {
             log.info(String.join(" ", new String(gameState.getBoard()[i]).split("")));
         }
+        printExtraGameStateInfo(gameState);
+    }
+
+    public void printBoardFromCertainSide(OnitamaGameState gameState, char colorOfSide) {
+        if (colorOfSide == gameState.getCurrentTurn()) {
+            printBoard(gameState);
+        } else {
+            char[][] newBoard = onitamaGameMoveService.rotateBoard(gameState.getBoard());
+            for (int i = 4; i >= 0; i--) {
+                log.info(String.join(" ", new String(newBoard[i]).split("")));
+            }
+            printExtraGameStateInfo(gameState);
+        }
+    }
+
+    public void printExtraGameStateInfo(OnitamaGameState gameState) {
         log.info("Current turn: {}", gameState.getCurrentTurn());
         log.info("Red movement cards: {}", String.join(" ", gameState.getRedPlayerMovementCards().stream().map(OnitamaSimpleMovementCard::getName).toList()));
         log.info("Blue movement cards: {}", String.join(" ", gameState.getBluePlayerMovementCards().stream().map(OnitamaSimpleMovementCard::getName).toList()));

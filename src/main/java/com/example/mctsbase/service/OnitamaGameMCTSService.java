@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,9 +21,10 @@ public class OnitamaGameMCTSService extends BaseMCTSService<OnitamaGameState> {
         onitamaGameMoveService = baseGameMoveService;
     }
 
+    // TODO look at why this is considering some nodes visited millions of times in the second iteration, maybe look in to atomicinteger for visits or locking nodes as they're worked
     @SneakyThrows
     public BaseMCTSNode parallelMCTS(BaseMCTSNode mctsNode, Integer maxDepthIncrease, Integer maxTime, Integer numThreads) {
-        nodes = new ArrayList<>();
+        nodes = Collections.synchronizedList(new ArrayList<>());
         try {
             List<Thread> threads = new ArrayList<>();
             for (int i = 0; i < numThreads; i++) {
@@ -39,14 +41,14 @@ public class OnitamaGameMCTSService extends BaseMCTSService<OnitamaGameState> {
                     .currentValue(mctsNode.getCurrentValue())
                     .score(mctsNode.getScore())
                     .board(OnitamaGameState.cloneBoard((OnitamaGameState) mctsNode.getBoard()))
-                    .children(new ArrayList<>())
+                    .children(Collections.synchronizedList(new ArrayList<>()))
                     .parent(null)
-                    .unexplored(new ArrayList<>())
+                    .unexplored(Collections.synchronizedList(new ArrayList<>()))
                     .build();
             onitamaGameMoveService.possibleNextBoards((OnitamaGameState) mctsNode.getBoard()).forEach(board -> newNode.getChildren().add(BaseMCTSNode.builder()
-                    .unexplored(null)
+                    .unexplored(Collections.synchronizedList(new ArrayList<>()))
                     .parent(null)
-                    .children(null)
+                    .children(Collections.synchronizedList(new ArrayList<>()))
                     .board(board)
                     .score(0)
                     .currentValue(0)
@@ -103,11 +105,11 @@ public class OnitamaGameMCTSService extends BaseMCTSService<OnitamaGameState> {
         if (score.equals(BoardGameScore.UNDETERMINED)) {
             int redPieceCount = onitamaGameMoveService.numPiecesForColor(mctsNode.getBoard().getBoard(), 'r');
             int bluePieceCount = onitamaGameMoveService.numPiecesForColor(mctsNode.getBoard().getBoard(), 'b');
-            if (mctsNode.getBoard().getCurrentTurn() == 'b' && redPieceCount > bluePieceCount) {
-                mctsNode.setScore(mctsNode.getScore() + 2.5 + (double) (redPieceCount - bluePieceCount) / 2);
+            if (mctsNode.getBoard().getCurrentTurn() == 'b') {
+                mctsNode.setScore(mctsNode.getScore() + redPieceCount - bluePieceCount);
             }
-            if (mctsNode.getBoard().getCurrentTurn() == 'r' && bluePieceCount > redPieceCount) {
-                mctsNode.setScore(mctsNode.getScore() + 2.5 + (double) (bluePieceCount - redPieceCount) / 2);
+            if (mctsNode.getBoard().getCurrentTurn() == 'r') {
+                mctsNode.setScore(mctsNode.getScore() + bluePieceCount - redPieceCount);
             }
         }
         mctsNode.setTimesVisited(mctsNode.getTimesVisited() + 1);
