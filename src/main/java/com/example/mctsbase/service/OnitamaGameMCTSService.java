@@ -22,6 +22,7 @@ public class OnitamaGameMCTSService extends BaseMCTSService<OnitamaGameState> {
     }
 
     // TODO look at why this is considering some nodes visited millions of times in the second iteration, maybe look in to atomicinteger for visits or locking nodes as they're worked
+    // Insight on this is that the new node does not have any child nodes, need to look at combining all the nodes below that child, maybe a recursive function?
     @SneakyThrows
     public BaseMCTSNode parallelMCTS(BaseMCTSNode mctsNode, Integer maxDepthIncrease, Integer maxTime, Integer numThreads) {
         nodes = Collections.synchronizedList(new ArrayList<>());
