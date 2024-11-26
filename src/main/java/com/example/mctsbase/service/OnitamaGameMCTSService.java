@@ -117,24 +117,10 @@ public class OnitamaGameMCTSService extends BaseMCTSService<OnitamaGameState> {
     }
 
     public BaseMCTSNode monteCarloTreeSearch(BaseMCTSNode mctsNode, Integer maxDepthIncrease, Integer maxTime) {
-        long startTime = System.currentTimeMillis();
         int startingDepth = mctsNode.getDepth();
         maxDepth = (maxDepthIncrease != null && maxDepthIncrease != 0) ? maxDepthIncrease + startingDepth : 0;
 
         boolean pruned = false;
-
-        // While resources left and tree not fully mapped
-        while (!pruned && System.currentTimeMillis() - startTime < maxTime) {
-            BaseMCTSNode leaf = traverse(mctsNode);
-            rollout(leaf);
-            pruned = pruneLosingBranches(mctsNode);
-        }
-
-        while (System.currentTimeMillis() - startTime < maxTime) {
-            BaseMCTSNode leaf = traverse(mctsNode);
-            rollout(leaf);
-        }
-        log.info("times visited: " + mctsNode.getTimesVisited());
-        return mostVisitedChild(mctsNode);
+        return monteCarloTreeSearchWithPruning(mctsNode, maxTime, pruned);
     }
 }

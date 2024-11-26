@@ -119,21 +119,8 @@ public class ConnectFourMCTSService extends BaseMCTSService<ConnectFourGameState
         }
         log.info("Making move for board with level {}", level);
         int maxTime = level * 200;
-        long startTime = System.currentTimeMillis();
-        maxDepth = 0;
+        maxDepth = 20;
         boolean pruned = level <= 7;
-
-        // While resources left and tree not fully mapped
-        while (!pruned && System.currentTimeMillis() - startTime < maxTime) {
-            BaseMCTSNode leaf = traverse(mctsNode);
-            rollout(leaf);
-            pruned = pruneLosingBranches(mctsNode);
-        }
-
-        while (System.currentTimeMillis() - startTime < maxTime) {
-            BaseMCTSNode leaf = traverse(mctsNode);
-            rollout(leaf);
-        }
-        return mostVisitedChild(mctsNode);
+        return monteCarloTreeSearchWithPruning(mctsNode, maxTime, pruned);
     }
 }

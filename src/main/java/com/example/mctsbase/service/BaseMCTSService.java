@@ -24,18 +24,35 @@ public class BaseMCTSService<T extends BaseGameState> {
         this.moveService = moveService;
     }
 
-    public BaseMCTSNode monteCarloTreeSearch(BaseMCTSNode mctsNode, Integer maxDepthIncrease, Integer maxTime) {
-        long startTime = System.currentTimeMillis();
-        int startingDepth = mctsNode.getDepth();
-        maxDepth = (maxDepthIncrease != null && maxDepthIncrease != 0) ? maxDepthIncrease + startingDepth : 0;
+    public BaseMCTSNode monteCarloTreeSearchWithPruning(BaseMCTSNode mctsNode, Integer maxTime, boolean pruned) {
+        long endTime = System.currentTimeMillis() + maxTime;
 
         // While resources left and tree not fully mapped
-        while (System.currentTimeMillis() - startTime < maxTime) {
+        while (!pruned && System.currentTimeMillis() < endTime) {
+            BaseMCTSNode leaf = traverse(mctsNode);
+            rollout(leaf);
+            pruned = pruneLosingBranches(mctsNode);
+        }
+
+        return mctsLoop(mctsNode, endTime);
+    }
+
+    public BaseMCTSNode mctsLoop(BaseMCTSNode mctsNode, long endTime) {
+        // While resources left and tree not fully mapped
+        while (System.currentTimeMillis() < endTime) {
             BaseMCTSNode leaf = traverse(mctsNode);
             rollout(leaf);
         }
-        log.info("times visited: " + mctsNode.getTimesVisited());
+        log.info("times visited: {}", mctsNode.getTimesVisited());
         return mostVisitedChild(mctsNode);
+    }
+
+    public BaseMCTSNode monteCarloTreeSearch(BaseMCTSNode mctsNode, Integer maxDepthIncrease, Integer maxTime) {
+        int startingDepth = mctsNode.getDepth();
+        maxDepth = (maxDepthIncrease != null && maxDepthIncrease != 0) ? maxDepthIncrease + startingDepth : 0;
+        long endTime = System.currentTimeMillis() + maxTime;
+
+        return mctsLoop(mctsNode, endTime);
     }
 
     // Get the evaluation of the node provided
