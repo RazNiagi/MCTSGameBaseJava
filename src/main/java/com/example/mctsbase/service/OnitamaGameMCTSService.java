@@ -137,28 +137,4 @@ public class OnitamaGameMCTSService extends BaseMCTSService<OnitamaGameState> {
         log.info("times visited: " + mctsNode.getTimesVisited());
         return mostVisitedChild(mctsNode);
     }
-
-    public boolean pruneLosingBranches(BaseMCTSNode mctsNode) {
-        boolean areAllChildrenFullyExpanded = mctsNode.getUnexplored().isEmpty() && mctsNode.getChildren().stream().filter(child -> child.getUnexplored().isEmpty()).toList().size() == mctsNode.getChildren().size();
-        if (!areAllChildrenFullyExpanded) {
-            return false;
-        }
-        if (mctsNode.getChildren().size() == 1) {
-            return true;
-        }
-        List<Boolean> shouldBePruned = new ArrayList<>();
-        mctsNode.getChildren().forEach(child -> {
-            if (mctsNode.getBoard().getCurrentTurn() == 'r') {
-                shouldBePruned.add(child.getChildren().stream().anyMatch(childChild -> childChild.getBoard().getBoardGameScore() == BoardGameScore.BLUE_WIN));
-            } else {
-                shouldBePruned.add(child.getChildren().stream().anyMatch(childChild -> childChild.getBoard().getBoardGameScore() == BoardGameScore.RED_WIN));
-            }
-        });
-        for (int i = shouldBePruned.size() - 1; i >= 0; i--) {
-            if (shouldBePruned.get(i) && mctsNode.getChildren().size() > 1) {
-                mctsNode.getChildren().remove(i);
-            }
-        }
-        return true;
-    }
 }

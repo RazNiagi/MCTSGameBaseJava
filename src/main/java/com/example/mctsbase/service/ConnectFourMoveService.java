@@ -25,7 +25,7 @@ public class ConnectFourMoveService implements BaseGameMoveService<ConnectFourGa
             highestEmptyRowInColumn++;
         }
         newBoard.switchTurn();
-        checkBoardForWins(newBoard);
+        newBoard.setBoardGameScore(checkBoardForWins(newBoard));
         return newBoard;
     }
 
@@ -108,19 +108,15 @@ public class ConnectFourMoveService implements BaseGameMoveService<ConnectFourGa
             }
         }
         if (redWin && yellowWin) {
-            board.setBoardGameScore(BoardGameScore.INVALID_BOARD);
             return BoardGameScore.INVALID_BOARD;
         }
         if (redWin) {
-            board.setBoardGameScore(BoardGameScore.RED_WIN);
             return BoardGameScore.RED_WIN;
         }
         if (yellowWin) {
-            board.setBoardGameScore(BoardGameScore.YELLOW_WIN);
             return BoardGameScore.YELLOW_WIN;
         }
         if (getAllLegalMoves(board).isEmpty()) {
-            board.setBoardGameScore(BoardGameScore.TIE);
             return BoardGameScore.TIE;
         }
         return BoardGameScore.UNDETERMINED;

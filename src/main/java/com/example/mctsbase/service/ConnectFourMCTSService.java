@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 @Slf4j
 @Service
@@ -92,5 +93,47 @@ public class ConnectFourMCTSService extends BaseMCTSService<ConnectFourGameState
         }
 
         nodes.add(mctsNode);
+    }
+
+    public BaseMCTSNode monteCarloTreeSearchWithLevel(BaseMCTSNode mctsNode, Integer level) {
+        if (mctsNode.getChildren().size() == 1) {
+            return mctsNode.getChildren().getFirst();
+        }
+        int chanceForRandom = (int)(Math.random() * 100) + 1;
+        if (chanceForRandom > 10 * level) {
+            log.info("Returning random move");
+            Random rand = new Random();
+            ArrayList<BaseMCTSNode> unexploredAndChildren = new ArrayList<>(mctsNode.getChildren());
+            mctsNode.getUnexplored().forEach(unexploredNode -> unexploredAndChildren.add(BaseMCTSNode.builder()
+                    .root(false)
+                    .depth(mctsNode.getDepth() + 1)
+                    .timesVisited(1)
+                    .currentValue(0.0)
+                    .score(0.0)
+                    .board(unexploredNode)
+                    .children(new ArrayList<>())
+                    .parent(mctsNode)
+                    .unexplored(new ArrayList<>())
+                    .build()));
+            return unexploredAndChildren.get(rand.nextInt(unexploredAndChildren.size()));
+        }
+        log.info("Making move for board with level {}", level);
+        int maxTime = level * 200;
+        long startTime = System.currentTimeMillis();
+        maxDepth = 0;
+        boolean pruned = level <= 7;
+
+        // While resources left and tree not fully mapped
+        while (!pruned && System.currentTimeMillis() - startTime < maxTime) {
+            BaseMCTSNode leaf = traverse(mctsNode);
+            rollout(leaf);
+            pruned = pruneLosingBranches(mctsNode);
+        }
+
+        while (System.currentTimeMillis() - startTime < maxTime) {
+            BaseMCTSNode leaf = traverse(mctsNode);
+            rollout(leaf);
+        }
+        return mostVisitedChild(mctsNode);
     }
 }
