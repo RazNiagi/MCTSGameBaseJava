@@ -6,10 +6,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -100,27 +97,32 @@ public class ConnectFourMCTSService extends BaseMCTSService<ConnectFourGameState
             return mctsNode.getChildren().getFirst();
         }
         int chanceForRandom = (int)(Math.random() * 100) + 1;
-        if (chanceForRandom > 10 * level) {
-            log.info("Returning random move");
-            Random rand = new Random();
-            ArrayList<BaseMCTSNode> unexploredAndChildren = new ArrayList<>(mctsNode.getChildren());
-            mctsNode.getUnexplored().forEach(unexploredNode -> unexploredAndChildren.add(BaseMCTSNode.builder()
-                    .root(false)
-                    .depth(mctsNode.getDepth() + 1)
-                    .timesVisited(1)
-                    .currentValue(0.0)
-                    .score(0.0)
-                    .board(unexploredNode)
-                    .children(new ArrayList<>())
-                    .parent(mctsNode)
-                    .unexplored(new ArrayList<>())
-                    .build()));
-            return unexploredAndChildren.get(rand.nextInt(unexploredAndChildren.size()));
-        }
         log.info("Making move for board with level {}", level);
         int maxTime = level * 200;
         maxDepth = 20;
         boolean pruned = level <= 7;
-        return monteCarloTreeSearchWithPruning(mctsNode, maxTime, pruned);
+        BaseMCTSNode returnNode = monteCarloTreeSearchWithPruning(mctsNode, maxTime, pruned);
+        if (chanceForRandom <= 10 * level) {
+            return returnNode;
+        }
+        log.info("Choosing random move within top {}% of other moves and best", level * 10);
+        BaseMCTSNode parentNode = returnNode.getParent();
+        return getRandomTopPercentileChild(parentNode, level);
+    }
+
+    public BaseMCTSNode getRandomTopPercentileChild(BaseMCTSNode mctsNode, Integer level) {
+        List<BaseMCTSNode> childrenAndPruned = new ArrayList<>();
+        if (Objects.nonNull(mctsNode.getPrunedChildren())) {
+            childrenAndPruned.addAll(mctsNode.getPrunedChildren());
+        }
+        childrenAndPruned.addAll(mctsNode.getChildren());
+        if (childrenAndPruned.size() == 1) {
+            return childrenAndPruned.getFirst();
+        }
+        List<BaseMCTSNode> children = childrenAndPruned.stream().sorted(Comparator.comparingInt(BaseMCTSNode::getTimesVisited)).toList().reversed();
+        double percentile = (double) (100 - (10 * level)) / 100;
+        int numNodesToConsider = (int) Math.ceil((children.size() - 1) * percentile) + 1;
+        Random rand = new Random();
+        return children.get(rand.nextInt(numNodesToConsider));
     }
 }

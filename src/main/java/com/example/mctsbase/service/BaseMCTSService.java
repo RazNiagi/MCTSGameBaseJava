@@ -188,10 +188,15 @@ public class BaseMCTSService<T extends BaseGameState> {
                 shouldBePruned.add(child.getChildren().stream().anyMatch(childChild -> childChild.getBoard().getBoardGameScore() == BoardGameScore.RED_WIN));
             }
         });
+        List<BaseMCTSNode> prunedChildren = new ArrayList<>();
         for (int i = shouldBePruned.size() - 1; i >= 0; i--) {
             if (shouldBePruned.get(i) && mctsNode.getChildren().size() > 1) {
+                prunedChildren.add(mctsNode.getChildren().get(i));
                 mctsNode.getChildren().remove(i);
             }
+        }
+        if (!prunedChildren.isEmpty()) {
+            mctsNode.setPrunedChildren(prunedChildren);
         }
         return true;
     }
