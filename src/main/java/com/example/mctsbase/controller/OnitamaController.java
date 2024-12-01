@@ -1,16 +1,16 @@
 package com.example.mctsbase.controller;
 
+import com.example.mctsbase.dto.OnitamaGameStateDTO;
 import com.example.mctsbase.enums.BoardGameScore;
-import com.example.mctsbase.model.BaseMCTSNode;
-import com.example.mctsbase.model.OnitamaGameState;
-import com.example.mctsbase.model.OnitamaSimpleMovementCard;
-import com.example.mctsbase.model.OnitamaSimplifiedGameState;
+import com.example.mctsbase.model.*;
 import com.example.mctsbase.service.OnitamaGameMCTSService;
 import com.example.mctsbase.service.OnitamaGameMoveService;
 import com.example.mctsbase.service.OnitamaGameService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -116,5 +116,34 @@ public class OnitamaController {
         }
 
         return "";
+    }
+
+    @PostMapping(value="/make-move", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity makeMove(@RequestBody OnitamaGameStateDTO gameState) {
+        log.info("Received request to make move on board");
+        if (gameState.getLevel() < 1 || gameState.getLevel() > 10) {
+            return ResponseEntity.
+                    status(HttpStatus.BAD_REQUEST)
+                    .body("Level must be between 1 and 10");
+        }
+
+        OnitamaGameState board = OnitamaGameStateDTO.getGameState(gameState);
+        BaseMCTSNode mctsNode = BaseMCTSNode.builder()
+                .depth(0)
+                .root(true)
+                .unexplored(new ArrayList<>(onitamaGameMoveService.possibleNextBoards(board)))
+                .children(new ArrayList<>())
+                .parent(null)
+                .timesVisited(0)
+                .score(0.0)
+                .currentValue(0.0)
+                .board(board)
+                .build();
+        OnitamaGameState newBoard = (OnitamaGameState) onitamaGameMCTSService.monteCarloTreeSearchWithLevel(mctsNode, gameState.getLevel()).getBoard();
+        OnitamaGameStateDTO newBoardDTO = onitamaGameService.getDTOFromGameState(newBoard, gameState.getLevel());
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(newBoardDTO);
     }
 }

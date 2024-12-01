@@ -200,4 +200,38 @@ public class BaseMCTSService<T extends BaseGameState> {
         }
         return true;
     }
+
+    public BaseMCTSNode monteCarloTreeSearchWithLevel(BaseMCTSNode mctsNode, Integer level) {
+        if (mctsNode.getChildren().size() == 1) {
+            return mctsNode.getChildren().getFirst();
+        }
+        int chanceForRandom = (int)(Math.random() * 100) + 1;
+        log.info("Making move for board with level {}", level);
+        int maxTime = level * 200;
+        maxDepth = 20;
+        boolean pruned = level <= 7;
+        BaseMCTSNode returnNode = monteCarloTreeSearchWithPruning(mctsNode, maxTime, pruned);
+        if (chanceForRandom <= 10 * level) {
+            return returnNode;
+        }
+        log.info("Choosing random move within top {}% of other moves and best", level * 10);
+        BaseMCTSNode parentNode = returnNode.getParent();
+        return getRandomTopPercentileChild(parentNode, level);
+    }
+
+    public BaseMCTSNode getRandomTopPercentileChild(BaseMCTSNode mctsNode, Integer level) {
+        List<BaseMCTSNode> childrenAndPruned = new ArrayList<>();
+        if (Objects.nonNull(mctsNode.getPrunedChildren())) {
+            childrenAndPruned.addAll(mctsNode.getPrunedChildren());
+        }
+        childrenAndPruned.addAll(mctsNode.getChildren());
+        if (childrenAndPruned.size() == 1) {
+            return childrenAndPruned.getFirst();
+        }
+        List<BaseMCTSNode> children = childrenAndPruned.stream().sorted(Comparator.comparingInt(BaseMCTSNode::getTimesVisited)).toList().reversed();
+        double percentile = (double) (100 - (10 * level)) / 100;
+        int numNodesToConsider = (int) Math.ceil((children.size() - 1) * percentile) + 1;
+        Random rand = new Random();
+        return children.get(rand.nextInt(numNodesToConsider));
+    }
 }

@@ -124,4 +124,22 @@ public class OnitamaGameMCTSService extends BaseMCTSService<OnitamaGameState> {
         boolean pruned = false;
         return monteCarloTreeSearchWithPruning(mctsNode, maxTime, pruned);
     }
+
+    public BaseMCTSNode monteCarloTreeSearchWithLevel(BaseMCTSNode mctsNode, Integer level) {
+        if (mctsNode.getChildren().size() == 1) {
+            return mctsNode.getChildren().getFirst();
+        }
+        int chanceForRandom = (int)(Math.random() * 100) + 1;
+        log.info("Making move for board with level {}", level);
+        int maxTime = level * 500;
+        maxDepth = level * 2;
+        boolean pruned = level <= 7;
+        BaseMCTSNode returnNode = monteCarloTreeSearchWithPruning(mctsNode, maxTime, pruned);
+        if (chanceForRandom <= 10 * level) {
+            return returnNode;
+        }
+        log.info("Choosing random move within top {}% of other moves and best", level * 10);
+        BaseMCTSNode parentNode = returnNode.getParent();
+        return getRandomTopPercentileChild(parentNode, level);
+    }
 }

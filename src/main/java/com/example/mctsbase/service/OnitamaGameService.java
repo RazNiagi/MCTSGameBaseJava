@@ -1,5 +1,6 @@
 package com.example.mctsbase.service;
 
+import com.example.mctsbase.dto.OnitamaGameStateDTO;
 import com.example.mctsbase.enums.BoardGameScore;
 import com.example.mctsbase.enums.OnitamaExpansion;
 import com.example.mctsbase.model.OnitamaGameState;
@@ -143,5 +144,18 @@ public class OnitamaGameService implements BaseGameService<OnitamaGameState> {
         log.info("Red movement cards: {}", String.join(" ", gameState.getRedPlayerMovementCards().stream().map(OnitamaSimpleMovementCard::getName).toList()));
         log.info("Blue movement cards: {}", String.join(" ", gameState.getBluePlayerMovementCards().stream().map(OnitamaSimpleMovementCard::getName).toList()));
         log.info("Middle movement card: {}", gameState.getMiddleCard().getName());
+    }
+
+    public OnitamaGameStateDTO getDTOFromGameState(OnitamaGameState gameState, int level) {
+        List<OnitamaMovementCard> redPlayerMovementCards = new ArrayList<>();
+        for (OnitamaSimpleMovementCard card : gameState.getRedPlayerMovementCards()) {
+            redPlayerMovementCards.add(onitamaMovementCardService.getCardFromName(card.getName()));
+        }
+        List<OnitamaMovementCard> bluePlayerMovementCards = new ArrayList<>();
+        for (OnitamaSimpleMovementCard card : gameState.getBluePlayerMovementCards()) {
+            bluePlayerMovementCards.add(onitamaMovementCardService.getCardFromName(card.getName()));
+        }
+        return new OnitamaGameStateDTO(gameState.getBoard(), gameState.getCurrentTurn(), gameState.getBoardGameScore(),
+                bluePlayerMovementCards, redPlayerMovementCards, onitamaMovementCardService.getCardFromName(gameState.getMiddleCard().getName()), level);
     }
 }
