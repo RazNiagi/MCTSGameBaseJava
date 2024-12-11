@@ -21,7 +21,7 @@ public class OnitamaGameMoveService implements BaseGameMoveService<OnitamaGameSt
 
     public OnitamaGameState makeMove(OnitamaGameState state, int startX, int startY, int deltaColumns, int deltaRows, String cardName) {
         OnitamaGameState newState = OnitamaGameState.cloneBoard(state);
-        newState.getBoard()[startX + deltaRows][startY + deltaColumns] = newState.getBoard()[startX][startY];
+        newState.getBoard()[startX + deltaRows][startY - deltaColumns] = newState.getBoard()[startX][startY];
         newState.getBoard()[startX][startY] = '-';
         List<OnitamaSimpleMovementCard> movementCards = newState.getCurrentTurn() == 'r'
                 ? newState.getRedPlayerMovementCards()
@@ -50,10 +50,10 @@ public class OnitamaGameMoveService implements BaseGameMoveService<OnitamaGameSt
         if (Character.toLowerCase(state.getBoard()[startX][startY]) != state.getCurrentTurn()) {
             return false;
         }
-        if (startY + deltaColumns > 4 || startX + deltaRows > 4 || startY + deltaColumns < 0 || startX + deltaRows < 0) {
+        if (startY - deltaColumns > 4 || startX + deltaRows > 4 || startY - deltaColumns < 0 || startX + deltaRows < 0) {
             return false;
         }
-        return Character.toLowerCase(state.getBoard()[startX + deltaRows][startY + deltaColumns]) != state.getCurrentTurn();
+        return Character.toLowerCase(state.getBoard()[startX + deltaRows][startY - deltaColumns]) != state.getCurrentTurn();
     }
 
     @SneakyThrows
