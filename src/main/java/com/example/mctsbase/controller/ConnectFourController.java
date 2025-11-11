@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 @Slf4j
 @RestController
-@RequestMapping("/connect-four")
+@RequestMapping("/api/connect-four")
 public class ConnectFourController {
 
     @Autowired

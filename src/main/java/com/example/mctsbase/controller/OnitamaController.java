@@ -18,7 +18,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/onitama")
+@RequestMapping("/api/onitama")
 public class OnitamaController {
     @Autowired
     private OnitamaGameService onitamaGameService;
