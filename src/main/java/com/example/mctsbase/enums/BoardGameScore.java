@@ -6,5 +6,7 @@ public enum BoardGameScore {
     TIE,
     INVALID_BOARD,
     UNDETERMINED,
-    BLUE_WIN
+    BLUE_WIN,
+    PLAYER_1_WIN,
+    PLAYER_2_WIN
 }
