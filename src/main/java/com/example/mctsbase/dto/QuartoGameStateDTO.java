@@ -52,6 +52,7 @@ public class QuartoGameStateDTO {
                 .currentTurn(gameStateDTO.getCurrentTurn())
                 .availablePieces(new TreeSet<>(Set.copyOf(availablePieces)))
                 .selectedPiece(gameStateDTO.getSelectedPiece())
+                .advancedMode(false)
                 .build();
     }
 }

@@ -152,6 +152,9 @@ public class BaseMCTSService<T extends BaseGameState> {
 
     // This is the move to make at the end of the MCTS period. Checks score instead of taking into account the exploration value;
     public BaseMCTSNode mostVisitedChild(BaseMCTSNode mctsNode) {
+        if (mctsNode.getChildren().isEmpty()) {
+            return mctsNode;
+        }
         int maxVisits = Integer.MIN_VALUE;
         for (BaseMCTSNode child : mctsNode.getChildren()) {
             if (child.getTimesVisited() > maxVisits) {
