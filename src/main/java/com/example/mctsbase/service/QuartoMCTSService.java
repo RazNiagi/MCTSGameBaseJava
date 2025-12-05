@@ -74,22 +74,7 @@ public class QuartoMCTSService extends BaseMCTSService<QuartoGameState> {
             try {
                 QuartoGameState nextState = QuartoGameState.cloneBoard(gameState);
                 nextState = quartoGameMoveService.makeMove(nextState, move);
-                
-                // If game ended after placement, return the terminal state
-                if (!nextState.getBoardGameScore().equals(BoardGameScore.UNDETERMINED)) {
-                    possibleNextBoards.add(nextState);
-                } else if (nextState.getAvailablePieces().isEmpty()) {
-                    // No pieces left to select, game is a tie
-                    nextState.setBoardGameScore(BoardGameScore.TIE);
-                    possibleNextBoards.add(nextState);
-                } else {
-                    // Game continues, select a piece for opponent (complete the turn)
-                    for (char piece : nextState.getAvailablePieces()) {
-                        QuartoGameState stateWithSelection = QuartoGameState.cloneBoard(nextState);
-                        stateWithSelection = quartoGameMoveService.selectPiece(stateWithSelection, piece);
-                        possibleNextBoards.add(stateWithSelection);
-                    }
-                }
+                possibleNextBoards.add(nextState);
             } catch (Exception e) {
                 log.error("Error generating possible boards: {}", e.getMessage());
             }
@@ -135,5 +120,18 @@ public class QuartoMCTSService extends BaseMCTSService<QuartoGameState> {
         }
 
         return selectedNode;
+    }
+
+    @Override
+    public void updateNode(BaseMCTSNode mctsNode, BoardGameScore score) {
+        if ((score.equals(BoardGameScore.PLAYER_1_WIN) && ((QuartoGameState) mctsNode.getBoard()).getCurrentTurn() == '1')
+                || (score.equals(BoardGameScore.PLAYER_2_WIN) && ((QuartoGameState) mctsNode.getBoard()).getCurrentTurn() == '2')) {
+            mctsNode.setScore(mctsNode.getScore() + 1.0);
+        } else if (score.equals(BoardGameScore.TIE)) {
+            mctsNode.setScore(mctsNode.getScore() + 0.5);
+        }
+
+        mctsNode.setTimesVisited(mctsNode.getTimesVisited() + 1);
+        updateNodeEval(mctsNode);
     }
 }

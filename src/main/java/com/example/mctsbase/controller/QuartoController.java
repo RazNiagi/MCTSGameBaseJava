@@ -58,7 +58,8 @@ public class QuartoController {
                     .unexplored(new ArrayList<>(quartoMCTSService.possibleNextBoardsAfterPlacement(gameState)))
                     .build();
 
-            BaseMCTSNode selectedNode = quartoMCTSService.monteCarloTreeSearchWithLevel(rootNode, gameStateDTO.getLevel());
+            // Get the best placement node, then get its best selection child for a complete turn
+            BaseMCTSNode selectedNode = quartoMCTSService.monteCarloAndGetGrandchildIfNeeded(rootNode, gameStateDTO.getLevel());
             QuartoGameState resultState = (QuartoGameState) selectedNode.getBoard();
             QuartoGameStateDTO resultDTO = quartoGameService.convertToDTO(resultState, gameStateDTO.getLevel());
 

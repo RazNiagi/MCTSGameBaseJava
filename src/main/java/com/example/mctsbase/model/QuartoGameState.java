@@ -15,6 +15,7 @@ public class QuartoGameState extends BaseGameState {
     private char selectedPiece;
     private SortedSet<Character> availablePieces;
     private boolean advancedMode;
+    private boolean playerPlayingFirst;
 
     public void switchTurn() {
         this.currentTurn = this.currentTurn == '1' ? '2' : '1';
