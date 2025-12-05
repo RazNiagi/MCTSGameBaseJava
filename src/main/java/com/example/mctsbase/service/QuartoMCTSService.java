@@ -75,20 +75,19 @@ public class QuartoMCTSService extends BaseMCTSService<QuartoGameState> {
                 QuartoGameState nextState = QuartoGameState.cloneBoard(gameState);
                 nextState = quartoGameMoveService.makeMove(nextState, move);
                 
-                // Check if the game ended after placement
+                // If game ended after placement, return the terminal state
                 if (!nextState.getBoardGameScore().equals(BoardGameScore.UNDETERMINED)) {
-                    // Game ended, don't add piece selection layer
                     possibleNextBoards.add(nextState);
                 } else if (nextState.getAvailablePieces().isEmpty()) {
-                    // No more pieces to select, game is a tie
+                    // No pieces left to select, game is a tie
                     nextState.setBoardGameScore(BoardGameScore.TIE);
                     possibleNextBoards.add(nextState);
                 } else {
-                    // Game continues, add piece selection layer
+                    // Game continues, select a piece for opponent (complete the turn)
                     for (char piece : nextState.getAvailablePieces()) {
-                        QuartoGameState stateWithSelectedPiece = QuartoGameState.cloneBoard(nextState);
-                        stateWithSelectedPiece = quartoGameMoveService.selectPiece(stateWithSelectedPiece, piece);
-                        possibleNextBoards.add(stateWithSelectedPiece);
+                        QuartoGameState stateWithSelection = QuartoGameState.cloneBoard(nextState);
+                        stateWithSelection = quartoGameMoveService.selectPiece(stateWithSelection, piece);
+                        possibleNextBoards.add(stateWithSelection);
                     }
                 }
             } catch (Exception e) {

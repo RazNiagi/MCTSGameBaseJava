@@ -100,22 +100,22 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
     private boolean checkAllRows(QuartoGameState gameState) {
         // Check all rows for a win
         for (int i = 0; i < 4; i++) {
-            if (checkRow(gameState)) {
+            if (checkRow(gameState, i)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean checkRow(QuartoGameState gameState) {
+    private boolean checkRow(QuartoGameState gameState, int row) {
         // Check a single row for a win
         char[][] board = gameState.getBoard();
-        if (board[0][0] != '-' && board[0][1] != '-' && board[0][2] != '-' && board[0][3] != '-') {
+        if (board[row][0] != '-' && board[row][1] != '-' && board[row][2] != '-' && board[row][3] != '-') {
             return checkIfAnyCommonAttributes(
-                    convertCharToByteUnderSixteen(board[0][0]),
-                    convertCharToByteUnderSixteen(board[0][1]),
-                    convertCharToByteUnderSixteen(board[0][2]),
-                    convertCharToByteUnderSixteen(board[0][3])
+                    convertCharToByteUnderSixteen(board[row][0]),
+                    convertCharToByteUnderSixteen(board[row][1]),
+                    convertCharToByteUnderSixteen(board[row][2]),
+                    convertCharToByteUnderSixteen(board[row][3])
             );
         }
         return false;
@@ -124,22 +124,22 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
     private boolean checkAllColumns(QuartoGameState gameState) {
         // Check all columns for a win
         for (int i = 0; i < 4; i++) {
-            if (checkColumn(gameState)) {
+            if (checkColumn(gameState, i)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean checkColumn(QuartoGameState gameState) {
+    private boolean checkColumn(QuartoGameState gameState, int col) {
         // Check a single column for a win
         char[][] board = gameState.getBoard();
-        if (board[0][0] != '-' && board[1][0] != '-' && board[2][0] != '-' && board[3][0] != '-') {
+        if (board[0][col] != '-' && board[1][col] != '-' && board[2][col] != '-' && board[3][col] != '-') {
             return checkIfAnyCommonAttributes(
-                    convertCharToByteUnderSixteen(board[0][0]),
-                    convertCharToByteUnderSixteen(board[1][0]),
-                    convertCharToByteUnderSixteen(board[2][0]),
-                    convertCharToByteUnderSixteen(board[3][0])
+                    convertCharToByteUnderSixteen(board[0][col]),
+                    convertCharToByteUnderSixteen(board[1][col]),
+                    convertCharToByteUnderSixteen(board[2][col]),
+                    convertCharToByteUnderSixteen(board[3][col])
             );
         }
         return false;
@@ -208,7 +208,7 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
     // This method checks if there are any common attributes among four pieces
     // This is only used to check for wins as we do not need to check for losing pieces
     private boolean checkIfAnyCommonAttributes(byte b1, byte b2, byte b3, byte b4) {
-        return (b1 & b2 & b3 & b4) != 0 || (flipLowerFourBytes(b1) & flipLowerFourBytes(b2) & flipLowerFourBytes(b3) & flipLowerFourBytes(b4)) != 0;
+        return (b1 & b2 & b3 & b4) != 0 || (flipLowerFourBits(b1) & flipLowerFourBits(b2) & flipLowerFourBits(b3) & flipLowerFourBits(b4)) != 0;
     }
 
     // This method converts a character representing a piece attribute into a byte value under 16
@@ -219,7 +219,7 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
 
     // This method gets the xor of a byte with 15 (0x0F)
     // This will flip the lower 4 bits of the byte so we can check for common attributes that might all be 0s
-    private byte flipLowerFourBytes(byte b) {
+    private byte flipLowerFourBits(byte b) {
         return (byte) (b ^ 0x0F);
     }
 }
