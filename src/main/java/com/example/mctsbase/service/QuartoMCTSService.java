@@ -97,8 +97,22 @@ public class QuartoMCTSService extends BaseMCTSService<QuartoGameState> {
         }
         
         List<QuartoGameState> possibleNextBoards = new ArrayList<>();
+        List<Character> safePieces = new ArrayList<>();
+        List<Character> losingPieces = new ArrayList<>();
         
+        // First pass: separate safe pieces from losing pieces
         for (char piece : gameState.getAvailablePieces()) {
+            if (quartoGameMoveService.isLosingPiece(gameState, piece)) {
+                losingPieces.add(piece);
+            } else {
+                safePieces.add(piece);
+            }
+        }
+        
+        // If we have safe pieces, only use those; otherwise we must choose from losing pieces
+        List<Character> piecesToConsider = safePieces.isEmpty() ? losingPieces : safePieces;
+        
+        for (char piece : piecesToConsider) {
             try {
                 QuartoGameState stateAfterPieceSelection = QuartoGameState.cloneBoard(gameState);
                 stateAfterPieceSelection = quartoGameMoveService.selectPiece(stateAfterPieceSelection, piece);
@@ -122,6 +136,17 @@ public class QuartoMCTSService extends BaseMCTSService<QuartoGameState> {
         return selectedNode;
     }
 
+    @Override
+    public BaseMCTSNode monteCarloTreeSearch(BaseMCTSNode mctsNode, Integer maxDepthIncrease, Integer maxTime) {
+        int startingDepth = mctsNode.getDepth();
+        // Double the depth for Quarto since each turn has 2 phases (placement + selection)
+        int quartoMaxDepth = (maxDepthIncrease != null && maxDepthIncrease != 0) ? (maxDepthIncrease * 2) + startingDepth : 0;
+        this.maxDepth = quartoMaxDepth;
+        long endTime = System.currentTimeMillis() + maxTime;
+
+        return mctsLoop(mctsNode, endTime);
+    }
+    
     @Override
     public void updateNode(BaseMCTSNode mctsNode, BoardGameScore score) {
         if ((score.equals(BoardGameScore.PLAYER_1_WIN) && ((QuartoGameState) mctsNode.getBoard()).getCurrentTurn() == '1')

@@ -78,6 +78,25 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
         }
         return possibleNextBoards;
     }
+    
+    // Check if giving a specific piece to the opponent would allow them to win immediately
+    public boolean isLosingPiece(QuartoGameState gameState, char piece) {
+        // Try placing this piece in every empty position to see if any leads to a win
+        for (QuartoGameMove move : getAllLegalMoves(gameState)) {
+            try {
+                QuartoGameState testState = QuartoGameState.cloneBoard(gameState);
+                testState.setSelectedPiece(piece);
+                testState = makeMove(testState, move);
+                if (!testState.getBoardGameScore().equals(BoardGameScore.UNDETERMINED)) {
+                    // This piece can create a win - it's a losing piece to give away
+                    return true;
+                }
+            } catch (Exception e) {
+                log.error("Error checking losing piece: {}", e.getMessage());
+            }
+        }
+        return false;
+    }
 
     public BoardGameScore checkBoardForWins(QuartoGameState gameState) {
         // Implementation for checking the board for wins goes here
