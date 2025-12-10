@@ -12,6 +12,7 @@ import java.util.TreeSet;
 @Slf4j
 @Service
 public class QuartoGameService implements BaseGameService<QuartoGameState> {
+    @Override
     public QuartoGameState initializeGameState(QuartoGameState gameState) {
         char[][] newBoard = new char[4][4];
         for (int i = 0; i < 4; i++) {
