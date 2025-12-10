@@ -68,9 +68,13 @@ public class BaseMCTSService<T extends BaseGameState> {
 
     public void updateNode(BaseMCTSNode mctsNode, BoardGameScore score) {
         // Update the evaluation of the node
-        if ((score.equals(BoardGameScore.RED_WIN) && mctsNode.getBoard().getCurrentTurn() == 'y') || (score.equals(BoardGameScore.YELLOW_WIN) && mctsNode.getBoard().getCurrentTurn() == 'r')) {
+        char currentTurn = mctsNode.getBoard().getCurrentTurn();
+
+        if ((score.equals(BoardGameScore.RED_WIN) && currentTurn == 'y') || 
+            (score.equals(BoardGameScore.YELLOW_WIN) && currentTurn == 'r')) {
             mctsNode.setScore(mctsNode.getScore() + 1);
         }
+        
         if (score.equals(BoardGameScore.TIE)) {
             mctsNode.setScore(mctsNode.getScore() + 0.5);
         }
@@ -152,6 +156,9 @@ public class BaseMCTSService<T extends BaseGameState> {
 
     // This is the move to make at the end of the MCTS period. Checks score instead of taking into account the exploration value;
     public BaseMCTSNode mostVisitedChild(BaseMCTSNode mctsNode) {
+        if (mctsNode.getChildren().isEmpty()) {
+            return mctsNode;
+        }
         int maxVisits = Integer.MIN_VALUE;
         for (BaseMCTSNode child : mctsNode.getChildren()) {
             if (child.getTimesVisited() > maxVisits) {
