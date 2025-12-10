@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -15,6 +16,11 @@ public class QuartoGameState extends BaseGameState {
     private char selectedPiece;
     private SortedSet<Character> availablePieces;
     private boolean advancedMode;
+
+    // Override Lombok-generated getter to return unmodifiable copy for defensive copying
+    public SortedSet<Character> getAvailablePieces() {
+        return availablePieces != null ? Collections.unmodifiableSortedSet(availablePieces) : null;
+    }
 
     public void switchTurn() {
         this.currentTurn = this.currentTurn == '1' ? '2' : '1';
