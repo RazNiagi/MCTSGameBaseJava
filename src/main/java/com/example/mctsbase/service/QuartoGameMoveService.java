@@ -88,6 +88,36 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
         return false;
     }
 
+    // Optimized method to find all losing pieces in a single pass
+    // Instead of checking each piece against all positions (O(pieces × positions)),
+    // we check each position against all pieces (O(positions × pieces))
+    // This is more efficient when we need to classify all available pieces
+    public List<Character> findAllLosingPieces(QuartoGameState gameState) {
+        List<Character> losingPieces = new ArrayList<>();
+        List<QuartoGameMove> emptyPositions = getAllLegalMoves(gameState);
+        
+        // For each available piece, check if it creates a win at any position
+        for (char piece : gameState.getAvailablePieces()) {
+            for (QuartoGameMove move : emptyPositions) {
+                try {
+                    QuartoGameState testState = QuartoGameState.cloneBoard(gameState);
+                    testState.setSelectedPiece(piece);
+                    testState = placePiece(testState, move);
+                    if (!testState.getBoardGameScore().equals(BoardGameScore.UNDETERMINED)) {
+                        // This piece can create a win - it's a losing piece to give away
+                        losingPieces.add(piece);
+                        break; // No need to check other positions for this piece
+                    }
+                } catch (Exception e) {
+                    log.error("Error checking losing piece '{}' at ({}, {}): {}", 
+                              piece, move.getRow(), move.getCol(), e.getMessage());
+                }
+            }
+        }
+        
+        return losingPieces;
+    }
+
     @Override
     public BoardGameScore checkBoardForWins(QuartoGameState gameState) {
         if (checkAllRows(gameState) || checkAllColumns(gameState) || checkBothDiagonals(gameState)) {

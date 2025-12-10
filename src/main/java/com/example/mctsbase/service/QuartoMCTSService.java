@@ -97,14 +97,14 @@ public class QuartoMCTSService extends BaseMCTSService<QuartoGameState> {
         }
         
         List<QuartoGameState> possibleNextBoards = new ArrayList<>();
-        List<Character> safePieces = new ArrayList<>();
-        List<Character> losingPieces = new ArrayList<>();
         
-        // First pass: separate safe pieces from losing pieces
+        // Find all losing pieces in a single optimized pass
+        List<Character> losingPieces = quartoGameMoveService.findAllLosingPieces(gameState);
+        
+        // Determine safe pieces (those not in the losing pieces list)
+        List<Character> safePieces = new ArrayList<>();
         for (char piece : gameState.getAvailablePieces()) {
-            if (quartoGameMoveService.isLosingPiece(gameState, piece)) {
-                losingPieces.add(piece);
-            } else {
+            if (!losingPieces.contains(piece)) {
                 safePieces.add(piece);
             }
         }
