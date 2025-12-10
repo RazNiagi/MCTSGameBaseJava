@@ -45,7 +45,8 @@ public class QuartoGameService implements BaseGameService<QuartoGameState> {
                 gameState.getBoardGameScore(),
                 level,
                 gameState.getAvailablePieces().stream().toList(),
-                gameState.getSelectedPiece()
+                gameState.getSelectedPiece(),
+                gameState.isAdvancedMode()
         );
     }
 }

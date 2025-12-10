@@ -17,8 +17,9 @@ public class QuartoGameStateDTO {
     public int level;
     public List<String> availablePieces = new ArrayList<>();
     public char selectedPiece;
+    public boolean advancedMode;
 
-    public QuartoGameStateDTO(char[][] board, char currentTurn, BoardGameScore boardGameScore, int level, List<Character> availablePieces, char selectedPiece) {
+    public QuartoGameStateDTO(char[][] board, char currentTurn, BoardGameScore boardGameScore, int level, List<Character> availablePieces, char selectedPiece, boolean advancedMode) {
         this.currentTurn = currentTurn;
         this.boardGameScore = boardGameScore;
         for (char[] chars : board) {
@@ -33,6 +34,7 @@ public class QuartoGameStateDTO {
             this.availablePieces.add(piece + "");
         }
         this.selectedPiece = selectedPiece;
+        this.advancedMode = advancedMode;
     }
 
     public static QuartoGameState getGameState(QuartoGameStateDTO gameStateDTO) {
@@ -52,7 +54,7 @@ public class QuartoGameStateDTO {
                 .currentTurn(gameStateDTO.getCurrentTurn())
                 .availablePieces(new TreeSet<>(Set.copyOf(availablePieces)))
                 .selectedPiece(gameStateDTO.getSelectedPiece())
-                .advancedMode(false)
+                .advancedMode(gameStateDTO.isAdvancedMode())
                 .build();
     }
 }
