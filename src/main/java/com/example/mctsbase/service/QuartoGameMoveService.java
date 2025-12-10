@@ -89,9 +89,8 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
     }
 
     // Optimized method to find all losing pieces in a single pass
-    // Instead of checking each piece against all positions (O(pieces × positions)),
-    // we check each position against all pieces (O(positions × pieces))
-    // This is more efficient when we need to classify all available pieces
+    // Reduces function call overhead and enables early-exit optimization
+    // when a piece is found to be losing at any position
     public List<Character> findAllLosingPieces(QuartoGameState gameState) {
         List<Character> losingPieces = new ArrayList<>();
         List<QuartoGameMove> emptyPositions = getAllLegalMoves(gameState);

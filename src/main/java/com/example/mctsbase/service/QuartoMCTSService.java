@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -99,9 +101,10 @@ public class QuartoMCTSService extends BaseMCTSService<QuartoGameState> {
         List<QuartoGameState> possibleNextBoards = new ArrayList<>();
         
         // Find all losing pieces in a single optimized pass
-        List<Character> losingPieces = quartoGameMoveService.findAllLosingPieces(gameState);
+        List<Character> losingPiecesList = quartoGameMoveService.findAllLosingPieces(gameState);
+        Set<Character> losingPieces = new HashSet<>(losingPiecesList);
         
-        // Determine safe pieces (those not in the losing pieces list)
+        // Determine safe pieces (those not in the losing pieces set)
         List<Character> safePieces = new ArrayList<>();
         for (char piece : gameState.getAvailablePieces()) {
             if (!losingPieces.contains(piece)) {
@@ -110,7 +113,7 @@ public class QuartoMCTSService extends BaseMCTSService<QuartoGameState> {
         }
         
         // If we have safe pieces, only use those; otherwise we must choose from losing pieces
-        List<Character> piecesToConsider = safePieces.isEmpty() ? losingPieces : safePieces;
+        List<Character> piecesToConsider = safePieces.isEmpty() ? losingPiecesList : safePieces;
         
         for (char piece : piecesToConsider) {
             try {
