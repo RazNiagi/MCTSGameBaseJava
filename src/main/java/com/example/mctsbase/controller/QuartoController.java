@@ -1,5 +1,6 @@
 package com.example.mctsbase.controller;
 
+import com.example.mctsbase.dto.ErrorResponseDTO;
 import com.example.mctsbase.dto.QuartoGameStateDTO;
 import com.example.mctsbase.model.BaseMCTSNode;
 import com.example.mctsbase.model.QuartoGameState;
@@ -36,18 +37,22 @@ public class QuartoController {
     }
 
     @PostMapping(value="/place-piece")
-    public ResponseEntity<QuartoGameStateDTO> placePiece(@RequestBody QuartoGameStateDTO gameStateDTO) {
+    public ResponseEntity<?> placePiece(@RequestBody QuartoGameStateDTO gameStateDTO) {
         try {
             QuartoGameState gameState = QuartoGameStateDTO.getGameState(gameStateDTO);
 
             if (gameStateDTO.getLevel() < 1 || gameStateDTO.getLevel() > 10) {
                 log.error("Invalid level: {}", gameStateDTO.getLevel());
-                return ResponseEntity.badRequest().build();
+                return ResponseEntity.badRequest()
+                        .body(new ErrorResponseDTO("INVALID_LEVEL", 
+                                "Level must be between 1 and 10. Received: " + gameStateDTO.getLevel()));
             }
 
             if (gameState.getSelectedPiece() == '-') {
                 log.error("Cannot place piece: no piece is selected");
-                return ResponseEntity.badRequest().build();
+                return ResponseEntity.badRequest()
+                        .body(new ErrorResponseDTO("NO_PIECE_SELECTED", 
+                                "Cannot place piece: no piece is currently selected"));
             }
 
             BaseMCTSNode rootNode = BaseMCTSNode.builder()
@@ -68,9 +73,16 @@ public class QuartoController {
             QuartoGameStateDTO resultDTO = quartoGameService.convertToDTO(resultState, gameStateDTO.getLevel());
 
             return ResponseEntity.ok(resultDTO);
+        } catch (IllegalArgumentException e) {
+            log.error("Invalid argument in place-piece: {}", e.getMessage(), e);
+            return ResponseEntity.badRequest()
+                    .body(new ErrorResponseDTO("INVALID_GAME_STATE", 
+                            "Invalid game state: " + e.getMessage()));
         } catch (Exception e) {
             log.error("Error in place-piece: {}", e.getMessage(), e);
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.internalServerError()
+                    .body(new ErrorResponseDTO("INTERNAL_ERROR", 
+                            "An unexpected error occurred: " + e.getMessage()));
         }
     }
 }
