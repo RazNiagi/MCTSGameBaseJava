@@ -20,8 +20,18 @@ public class QuartoGameState extends BaseGameState {
         this.currentTurn = this.currentTurn == '1' ? '2' : '1';
     }
 
-    public boolean equals(QuartoGameState other) {
-        return Arrays.deepEquals(this.board, other.board) && this.currentTurn == other.currentTurn && this.boardGameScore == other.getBoardGameScore();
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        QuartoGameState other = (QuartoGameState) obj;
+        return Arrays.deepEquals(this.board, other.board)
+                && this.currentTurn == other.currentTurn
+                && this.boardGameScore == other.getBoardGameScore()
+                && this.selectedPiece == other.selectedPiece
+                && ((this.availablePieces == null && other.availablePieces == null) ||
+                (this.availablePieces != null && this.availablePieces.equals(other.availablePieces)))
+                && this.advancedMode == other.advancedMode;
     }
 
     public static QuartoGameState cloneBoard(QuartoGameState board) {
