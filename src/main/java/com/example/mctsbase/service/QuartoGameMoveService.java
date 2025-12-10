@@ -89,6 +89,7 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
     }
 
     // Optimized method to find all losing pieces in a single pass
+    // A "losing piece" is one that would allow the opponent to win immediately if given to them
     // Reduces function call overhead and enables early-exit optimization
     // when a piece is found to be losing at any position
     public List<Character> findAllLosingPieces(QuartoGameState gameState) {
@@ -102,7 +103,8 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
                     QuartoGameState testState = QuartoGameState.cloneBoard(gameState);
                     testState.setSelectedPiece(piece);
                     testState = placePiece(testState, move);
-                    if (!testState.getBoardGameScore().equals(BoardGameScore.UNDETERMINED)) {
+                    BoardGameScore score = testState.getBoardGameScore();
+                    if (BoardGameScore.UNDETERMINED != score) {
                         // This piece can create a win - it's a losing piece to give away
                         losingPieces.add(piece);
                         break; // No need to check other positions for this piece
