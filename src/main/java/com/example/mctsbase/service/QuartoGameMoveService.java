@@ -15,10 +15,21 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
     // Might be better to separate the choosing of a piece and placing of a piece into two different methods
     // This would also mean splitting the QuartoGameMove back out into a placePiece and choosePiece move
     public QuartoGameState makeMove(QuartoGameState gameState, QuartoGameMove move) throws Exception {
-        if (!canMakeMove(gameState, move.getRow(), move.getCol())) {
-            throw new Exception("Illegal move");
+        int row = move.getRow();
+        int col = move.getCol();
+        if (row < 0 || row >= gameState.getBoard().length || col < 0 || col >= gameState.getBoard()[0].length) {
+            throw new Exception("Illegal move: position out of bounds (" + row + ", " + col + ")");
         }
-        gameState.getBoard()[move.getRow()][move.getCol()] = gameState.getSelectedPiece();
+        if (gameState.getBoard()[row][col] != '-') {
+            throw new Exception("Illegal move: target position (" + row + ", " + col + ") is already occupied");
+        }
+        if (gameState.getSelectedPiece() == '-') {
+            throw new Exception("Illegal move: no piece selected");
+        }
+        if (!gameState.getBoardGameScore().equals(com.example.mctsbase.enums.BoardGameScore.UNDETERMINED)) {
+            throw new Exception("Illegal move: game already finished");
+        }
+        gameState.getBoard()[row][col] = gameState.getSelectedPiece();
         gameState.setSelectedPiece('-');
         BoardGameScore newScore = checkBoardForWins(gameState);
         gameState.setBoardGameScore(newScore);
