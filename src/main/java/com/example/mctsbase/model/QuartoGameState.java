@@ -50,7 +50,7 @@ public class QuartoGameState extends BaseGameState {
                 .boardGameScore(board.getBoardGameScore())
                 .board(newBoardArray)
                 .selectedPiece(board.getSelectedPiece())
-                .availablePieces(new TreeSet<>(board.getAvailablePieces()))
+                .availablePieces(new TreeSet<>(board.availablePieces))
                 .advancedMode(board.isAdvancedMode())
                 .build();
     }
