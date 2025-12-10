@@ -12,9 +12,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameState> {
-    // Might be better to separate the choosing of a piece and placing of a piece into two different methods
-    // This would also mean splitting the QuartoGameMove back out into a placePiece and choosePiece move
-    public QuartoGameState makeMove(QuartoGameState gameState, QuartoGameMove move) throws Exception {
+    public QuartoGameState placePiece(QuartoGameState gameState, QuartoGameMove move) throws Exception {
         canMakeMove(gameState, move.getRow(), move.getCol());
         gameState.getBoard()[move.getRow()][move.getCol()] = gameState.getSelectedPiece();
         gameState.setSelectedPiece('-');
@@ -64,26 +62,11 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
         return legalMoves;
     }
 
+    // This method is not used in the current MCTS implementation as it differs from the two phase approach
+    // It is only here to satisfy the interface requirement
     @Override
     public List<QuartoGameState> possibleNextBoards(QuartoGameState gameState) {
-        if (!gameState.getBoardGameScore().equals(BoardGameScore.UNDETERMINED)) {
-            return List.of();
-        }
-        List<QuartoGameState> possibleNextBoards = new ArrayList<>();
-        for (QuartoGameMove move : getAllLegalMoves(gameState)) {
-            try {
-                QuartoGameState nextState = QuartoGameState.cloneBoard(gameState);
-                nextState = makeMove(nextState, move);
-                for (char piece : nextState.getAvailablePieces()) {
-                    QuartoGameState nextStateClone = QuartoGameState.cloneBoard(nextState);
-                    QuartoGameState stateAfterPieceSelection = selectPiece(nextStateClone, piece);
-                    possibleNextBoards.add(stateAfterPieceSelection);
-                }
-            } catch (Exception e) {
-                log.error("Error generating possible boards for move {}: {}", move, e.getMessage(), e);
-            }
-        }
-        return possibleNextBoards;
+        return List.of();
     }
     
     // Check if giving a specific piece to the opponent would allow them to win immediately
@@ -93,7 +76,7 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
             try {
                 QuartoGameState testState = QuartoGameState.cloneBoard(gameState);
                 testState.setSelectedPiece(piece);
-                testState = makeMove(testState, move);
+                testState = placePiece(testState, move);
                 if (!testState.getBoardGameScore().equals(BoardGameScore.UNDETERMINED)) {
                     // This piece can create a win - it's a losing piece to give away
                     return true;

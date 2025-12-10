@@ -73,7 +73,7 @@ public class QuartoMCTSService extends BaseMCTSService<QuartoGameState> {
         for (QuartoGameMove move : quartoGameMoveService.getAllLegalMoves(gameState)) {
             try {
                 QuartoGameState nextState = QuartoGameState.cloneBoard(gameState);
-                nextState = quartoGameMoveService.makeMove(nextState, move);
+                nextState = quartoGameMoveService.placePiece(nextState, move);
                 possibleNextBoards.add(nextState);
             } catch (Exception e) {
                 log.error("Error generating possible boards after placement at ({}, {}): {}", move.getRow(), move.getCol(), e.getMessage(), e);
