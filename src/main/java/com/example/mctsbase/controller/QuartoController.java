@@ -29,7 +29,7 @@ public class QuartoController {
     private QuartoMCTSService quartoMCTSService;
 
     @PostMapping(value="/test-quarto")
-    public ResponseEntity testQuarto() {
+    public ResponseEntity<QuartoGameStateDTO> testQuarto() {
         QuartoGameState board = quartoGameService.initializeGameState(QuartoGameState.builder().build());
         QuartoGameStateDTO boardDTO = quartoGameService.convertToDTO(board, 1);
         return ResponseEntity.status(200).body(boardDTO);

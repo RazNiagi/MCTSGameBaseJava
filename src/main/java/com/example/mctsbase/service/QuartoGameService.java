@@ -32,6 +32,7 @@ public class QuartoGameService implements BaseGameService<QuartoGameState> {
         return gameState;
     }
 
+    @Override
     public void printBoard(QuartoGameState gameState) {
         for (int i = 0; i < 4; i++) {
             log.info(String.join(" ", new String(gameState.getBoard()[i]).split("")));

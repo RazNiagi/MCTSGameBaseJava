@@ -11,13 +11,13 @@ import java.util.TreeSet;
 
 @Data
 public class QuartoGameStateDTO {
-    public List<List<String>> board = new ArrayList<>();
-    public char currentTurn;
-    public BoardGameScore boardGameScore;
-    public int level;
-    public List<String> availablePieces = new ArrayList<>();
-    public char selectedPiece;
-    public boolean advancedMode;
+    private List<List<String>> board = new ArrayList<>();
+    private char currentTurn;
+    private BoardGameScore boardGameScore;
+    private int level;
+    private List<String> availablePieces = new ArrayList<>();
+    private char selectedPiece;
+    private boolean advancedMode;
 
     public QuartoGameStateDTO(char[][] board, char currentTurn, BoardGameScore boardGameScore, int level, List<Character> availablePieces, char selectedPiece, boolean advancedMode) {
         this.currentTurn = currentTurn;
@@ -25,13 +25,13 @@ public class QuartoGameStateDTO {
         for (char[] chars : board) {
             List<String> tempList = new ArrayList<>();
             for (char aChar : chars) {
-                tempList.add(aChar + "");
+                tempList.add(String.valueOf(aChar));
             }
             this.board.add(tempList);
         }
         this.level = level;
         for (Character piece : availablePieces) {
-            this.availablePieces.add(piece + "");
+            this.availablePieces.add(Character.toString(piece));
         }
         this.selectedPiece = selectedPiece;
         this.advancedMode = advancedMode;

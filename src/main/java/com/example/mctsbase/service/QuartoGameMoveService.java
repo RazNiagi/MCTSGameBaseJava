@@ -15,21 +15,8 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
     // Might be better to separate the choosing of a piece and placing of a piece into two different methods
     // This would also mean splitting the QuartoGameMove back out into a placePiece and choosePiece move
     public QuartoGameState makeMove(QuartoGameState gameState, QuartoGameMove move) throws Exception {
-        int row = move.getRow();
-        int col = move.getCol();
-        if (row < 0 || row >= gameState.getBoard().length || col < 0 || col >= gameState.getBoard()[0].length) {
-            throw new Exception("Illegal move: position out of bounds (" + row + ", " + col + ")");
-        }
-        if (gameState.getBoard()[row][col] != '-') {
-            throw new Exception("Illegal move: target position (" + row + ", " + col + ") is already occupied");
-        }
-        if (gameState.getSelectedPiece() == '-') {
-            throw new Exception("Illegal move: no piece selected");
-        }
-        if (!gameState.getBoardGameScore().equals(com.example.mctsbase.enums.BoardGameScore.UNDETERMINED)) {
-            throw new Exception("Illegal move: game already finished");
-        }
-        gameState.getBoard()[row][col] = gameState.getSelectedPiece();
+        canMakeMove(gameState, move.getRow(), move.getCol());
+        gameState.getBoard()[move.getRow()][move.getCol()] = gameState.getSelectedPiece();
         gameState.setSelectedPiece('-');
         BoardGameScore newScore = checkBoardForWins(gameState);
         gameState.setBoardGameScore(newScore);
@@ -46,19 +33,27 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
             gameState.switchTurn();
             return gameState;
         } else {
-            throw new Exception("Illegal piece selection");
+            throw new Exception("Illegal piece selection: piece " + piece + " is not available");
         }
     }
 
-    public boolean canMakeMove(QuartoGameState gameState, int row, int col) {
-        return gameState.getBoard()[row][col] == '-'
-                && gameState.getSelectedPiece() != '-'
-                && gameState.getBoardGameScore().equals(com.example.mctsbase.enums.BoardGameScore.UNDETERMINED);
+    public void canMakeMove(QuartoGameState gameState, int row, int col) throws Exception {
+        if (row < 0 || row >= gameState.getBoard().length || col < 0 || col >= gameState.getBoard()[0].length) {
+            throw new Exception("Illegal move: position out of bounds (" + row + ", " + col + ")");
+        }
+        if (gameState.getBoard()[row][col] != '-') {
+            throw new Exception("Illegal move: target position (" + row + ", " + col + ") is already occupied");
+        }
+        if (gameState.getSelectedPiece() == '-') {
+            throw new Exception("Illegal move: no piece selected");
+        }
+        if (!gameState.getBoardGameScore().equals(BoardGameScore.UNDETERMINED)) {
+            throw new Exception("Illegal move: game already finished");
+        }
     }
 
     public List<QuartoGameMove> getAllLegalMoves(QuartoGameState gameState) {
         List<QuartoGameMove> legalMoves = new ArrayList<>();
-        // Implementation for generating all legal moves goes here
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 4; col++) {
                 if (gameState.getBoard()[row][col] == '-') {
@@ -69,8 +64,9 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
         return legalMoves;
     }
 
+    @Override
     public List<QuartoGameState> possibleNextBoards(QuartoGameState gameState) {
-        if (!gameState.getBoardGameScore().equals(com.example.mctsbase.enums.BoardGameScore.UNDETERMINED)) {
+        if (!gameState.getBoardGameScore().equals(BoardGameScore.UNDETERMINED)) {
             return List.of();
         }
         List<QuartoGameState> possibleNextBoards = new ArrayList<>();
@@ -84,7 +80,7 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
                     possibleNextBoards.add(stateAfterPieceSelection);
                 }
             } catch (Exception e) {
-                log.error(e.getMessage());
+                log.error("Error generating possible boards for move {}: {}", move, e.getMessage(), e);
             }
         }
         return possibleNextBoards;
@@ -109,8 +105,8 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
         return false;
     }
 
+    @Override
     public BoardGameScore checkBoardForWins(QuartoGameState gameState) {
-        // Implementation for checking the board for wins goes here
         if (checkAllRows(gameState) || checkAllColumns(gameState) || checkBothDiagonals(gameState)) {
             return currentPlayerWin(gameState);
         }
@@ -120,7 +116,7 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
         if (gameState.getAvailablePieces().isEmpty()) {
             return BoardGameScore.TIE;
         }
-        return com.example.mctsbase.enums.BoardGameScore.UNDETERMINED;
+        return BoardGameScore.UNDETERMINED;
     }
 
     private BoardGameScore currentPlayerWin(QuartoGameState gameState) {

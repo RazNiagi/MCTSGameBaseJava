@@ -18,9 +18,9 @@ import java.util.List;
 public class QuartoMCTSService extends BaseMCTSService<QuartoGameState> {
     private final QuartoGameMoveService quartoGameMoveService;
     
-    public QuartoMCTSService(QuartoGameMoveService baseGameMoveService) {
-        super(baseGameMoveService);
-        quartoGameMoveService = baseGameMoveService;
+    public QuartoMCTSService(QuartoGameMoveService quartoGameMoveService) {
+        super(quartoGameMoveService);
+        this.quartoGameMoveService = quartoGameMoveService;
     }
     
     @Override
@@ -76,7 +76,7 @@ public class QuartoMCTSService extends BaseMCTSService<QuartoGameState> {
                 nextState = quartoGameMoveService.makeMove(nextState, move);
                 possibleNextBoards.add(nextState);
             } catch (Exception e) {
-                log.error("Error generating possible boards: {}", e.getMessage());
+                log.error("Error generating possible boards after placement at ({}, {}): {}", move.getRow(), move.getCol(), e.getMessage(), e);
             }
         }
         
@@ -118,7 +118,7 @@ public class QuartoMCTSService extends BaseMCTSService<QuartoGameState> {
                 stateAfterPieceSelection = quartoGameMoveService.selectPiece(stateAfterPieceSelection, piece);
                 possibleNextBoards.add(stateAfterPieceSelection);
             } catch (Exception e) {
-                log.error("Error selecting piece: {}", e.getMessage());
+                log.error("Error selecting piece '{}': {}", piece, e.getMessage(), e);
             }
         }
         
