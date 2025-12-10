@@ -104,7 +104,7 @@ public class QuartoGameMoveService implements BaseGameMoveService<QuartoGameStat
                     testState.setSelectedPiece(piece);
                     testState = placePiece(testState, move);
                     BoardGameScore score = testState.getBoardGameScore();
-                    if (BoardGameScore.UNDETERMINED != score) {
+                    if (!score.equals(BoardGameScore.UNDETERMINED)) {
                         // This piece can create a win - it's a losing piece to give away
                         losingPieces.add(piece);
                         break; // No need to check other positions for this piece
