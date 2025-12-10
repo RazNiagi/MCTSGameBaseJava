@@ -40,6 +40,11 @@ public class QuartoController {
         try {
             QuartoGameState gameState = QuartoGameStateDTO.getGameState(gameStateDTO);
 
+            if (gameStateDTO.getLevel() < 1 || gameStateDTO.getLevel() > 10) {
+                log.error("Invalid level: {}", gameStateDTO.getLevel());
+                return ResponseEntity.badRequest().build();
+            }
+
             if (gameState.getSelectedPiece() == '-') {
                 log.error("Cannot place piece: no piece is selected");
                 return ResponseEntity.badRequest().build();
